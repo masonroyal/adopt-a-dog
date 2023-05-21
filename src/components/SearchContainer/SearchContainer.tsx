@@ -5,6 +5,7 @@ import { UserContext } from '@/providers/UserProvider';
 import Input from '@/components/Input/Input';
 
 import styles from './SearchContainer.module.scss';
+import InputSelect from '../InputSelect/InputSelect';
 
 interface SearchContainerProps {
   breeds: string[];
@@ -17,9 +18,20 @@ function SearchContainer({ breeds }: SearchContainerProps) {
   const [zipCode, setZipCode] = React.useState('');
   const [ageMin, setAgeMin] = React.useState('');
   const [ageMax, setAgeMax] = React.useState('');
+  const [size, setSize] = React.useState('');
+  const [sort, setSort] = React.useState('Ascending');
 
-  function createHandler(setter: React.Dispatch<React.SetStateAction<string>>) {
+  function createInputHandler(
+    setter: React.Dispatch<React.SetStateAction<string>>
+  ) {
     return (event: React.ChangeEvent<HTMLInputElement>) => {
+      setter(event.target.value);
+    };
+  }
+  function createSelectHandler(
+    setter: React.Dispatch<React.SetStateAction<string>>
+  ) {
+    return (event: React.ChangeEvent<HTMLSelectElement>) => {
       setter(event.target.value);
     };
   }
@@ -33,25 +45,37 @@ function SearchContainer({ breeds }: SearchContainerProps) {
         label="Search: "
         value={search}
         placeholder="Search for a dog"
-        onChange={createHandler(setSearch)}
+        onChange={createInputHandler(setSearch)}
       />
       <Input
         label="Zip Code: "
         value={zipCode}
         placeholder="Enter your zip code"
-        onChange={createHandler(setZipCode)}
+        onChange={createInputHandler(setZipCode)}
       />
       <Input
         label="Min Age: "
         value={ageMin}
         placeholder="Enter the minimum age"
-        onChange={createHandler(setAgeMin)}
+        onChange={createInputHandler(setAgeMin)}
       />
       <Input
         label="Max Age: "
         value={ageMax}
         placeholder="Enter the maximum age"
-        onChange={createHandler(setAgeMax)}
+        onChange={createInputHandler(setAgeMax)}
+      />
+      <InputSelect
+        value={size}
+        label="Size: "
+        onChange={createSelectHandler(setSize)}
+        options={['', 'test1', 'test2']}
+      />
+      <InputSelect
+        value={sort}
+        label="Sort: "
+        onChange={createSelectHandler(setSort)}
+        options={['Ascending', 'Descending']}
       />
     </div>
   );
