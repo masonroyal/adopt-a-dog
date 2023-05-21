@@ -24,7 +24,7 @@ export async function loginUser(
 ) {
   event.preventDefault();
 
-  const response = await fetch(`${API_ENDPOINT}/auth/login`, {
+  const response = await fetch('/api/user/login', {
     method: 'POST',
     body: JSON.stringify({ name, email }),
     credentials: 'include',

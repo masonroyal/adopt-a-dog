@@ -19,8 +19,8 @@ function LoginPage() {
     setEmail(event.target.value);
   }
 
-  function handleSubmit(event: React.FormEvent) {
-    loginUser(event, name, email, setLogin);
+  async function handleSubmit(event: React.FormEvent) {
+    await loginUser(event, name, email, setLogin);
     setName('');
     setEmail('');
     push('/');
@@ -31,8 +31,6 @@ function LoginPage() {
       <Input label="name" value={name} onChange={handleNameChange} />
       <Input label="email" value={email} onChange={handleEmailChange} />
       <button type="submit">Login</button>
-      {user === null ? <div>Not logged in</div> : <div>Logged in</div>}
-      {isLoggedIn && <div>Logged in {user}</div>}
     </form>
   );
 }
