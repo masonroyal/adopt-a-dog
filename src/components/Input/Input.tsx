@@ -8,7 +8,8 @@ interface InputProps {
   className?: string;
   placeholder?: string;
   type?: string;
-  onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  setter: React.Dispatch<React.SetStateAction<string>>;
+  // onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 function Input({
@@ -18,8 +19,9 @@ function Input({
   className = '',
   placeholder = '',
   type,
-  onChange,
-}: InputProps) {
+  setter,
+}: // onChange,
+InputProps) {
   const generatedId = React.useId();
 
   const appliedId = id || generatedId;
@@ -33,7 +35,9 @@ function Input({
         id={appliedId}
         className={`${styles.button} ${className}`}
         placeholder={placeholder}
-        onChange={onChange}
+        onChange={(e) => {
+          setter(e.target.value);
+        }}
       />
     </>
   );

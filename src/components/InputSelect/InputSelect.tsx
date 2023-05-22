@@ -5,22 +5,23 @@ interface InputSelectProps {
   options: string[];
   id?: string;
   label: string;
-  onChange: (event: React.ChangeEvent<HTMLSelectElement>) => void;
+  setter: React.Dispatch<React.SetStateAction<string>>;
 }
 
-function InputSelect({
-  value,
-  options,
-  id,
-  label,
-  onChange,
-}: InputSelectProps) {
+function InputSelect({ value, options, id, label, setter }: InputSelectProps) {
   const generatedId = React.useId();
   const appliedId = id || generatedId;
+
   return (
     <>
       <label htmlFor={appliedId}>{label}</label>
-      <select value={value} id={appliedId} onChange={onChange}>
+      <select
+        value={value}
+        id={appliedId}
+        onChange={(e) => {
+          setter(e.target.value);
+        }}
+      >
         {options.map((option, i) => {
           return (
             <option key={i} value={option}>

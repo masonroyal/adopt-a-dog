@@ -2,10 +2,11 @@
 
 import * as React from 'react';
 import { UserContext } from '@/providers/UserProvider';
-import Input from '@/components/Input/Input';
 
 import styles from './SearchContainer.module.scss';
-import InputSelect from '../InputSelect/InputSelect';
+import SearchForm from '@/components/SearchForm';
+import { API_ENDPOINT } from '@/utils/constants';
+import SearchResults from '../SearchResults/SearchResults';
 
 interface SearchContainerProps {
   breeds: string[];
@@ -13,70 +14,126 @@ interface SearchContainerProps {
 
 function SearchContainer({ breeds }: SearchContainerProps) {
   const { user, isLoggedIn } = React.useContext(UserContext);
+  const [dogIds, setDogIds] = React.useState({
+    prev: null,
+    next: null,
+    resultIds: [],
+  });
+  const [searchResults, setSearchResults] = React.useState([]);
+
   const [chosenBreeds, setChosenBreeds] = React.useState<string[]>([]);
   const [search, setSearch] = React.useState('');
   const [zipCode, setZipCode] = React.useState('');
   const [ageMin, setAgeMin] = React.useState('');
   const [ageMax, setAgeMax] = React.useState('');
   const [size, setSize] = React.useState('');
-  const [sort, setSort] = React.useState('Ascending');
+  const [sort, setSort] = React.useState('');
+  
 
-  function createInputHandler(
-    setter: React.Dispatch<React.SetStateAction<string>>
-  ) {
-    return (event: React.ChangeEvent<HTMLInputElement>) => {
-      setter(event.target.value);
-    };
-  }
-  function createSelectHandler(
-    setter: React.Dispatch<React.SetStateAction<string>>
-  ) {
-    return (event: React.ChangeEvent<HTMLSelectElement>) => {
-      setter(event.target.value);
-    };
+  function createParameters() {
+    //https://frontend-take-home-service.fetch.com/dogs?breeds=Pug&breeds=Beagle&ageMin=4&ageMax=12&size=Small&sort=Ascending
+    let parameters = '';
+    if (chosenBreeds.length > 0) {
+      for (let i = 0; i < chosenBreeds.length; i++) {
+        parameters += `&breeds=${chosenBreeds[i]}`;
+      }
+    }
+    if (ageMin !== '') {
+      parameters += `&ageMin=${ageMin}`;
+    }
+    if (ageMax !== '') {
+      parameters += `&ageMax=${ageMax}`;
+    }
+    if (size !== '') {
+      parameters += `&size=${size}`;
+    }
+    if (sort !== '') {
+      parameters += `&sort=${sort}`;
+    }
+    return parameters;
   }
 
-  // if (!user) {
-  //   return <div>Not logged in</div>;
-  // }
+  async function searchDogs() {
+    try {
+      const parameters = createParameters();
+
+      const response = await fetch(
+        `${API_ENDPOINT}/dogs/search?${parameters}`,
+        {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          credentials: 'include',
+        }
+      );
+
+      if (!response.ok) {
+        throw new Error('Error in SearchDogs');
+      }
+
+      const data = await response.json();
+      console.log({ data });
+
+      await getDogsInfo(data);
+    } catch (error) {
+      console.error('Error: ', error);
+    }
+  }
+
+  async function getDogsInfo(dogIds: any) {
+    try {
+      // TODO: check and limit to 100 dogs
+      const ids = dogIds.resultIds;
+      console.log('ids:', ids);
+      const response = await fetch(`${API_ENDPOINT}/dogs`, {
+        method: 'POST',
+        credentials: 'include',
+        body: JSON.stringify(ids),
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      });
+
+      if (!response.ok) {
+        throw new Error('Error in getDogsInfo');
+      }
+
+      const data = await response.json();
+      console.log({ data });
+      setSearchResults(data);
+    } catch (error) {
+      console.error('Error: ', error);
+    }
+  }
+
+  async function handleSearch() {
+    await searchDogs();
+  }
+
   return (
     <div className={styles.wrapper}>
-      <Input
-        label="Search: "
-        value={search}
-        placeholder="Search for a dog"
-        onChange={createInputHandler(setSearch)}
+      <SearchForm
+        breeds={breeds}
+        chosenBreeds={chosenBreeds}
+        setChosenBreeds={setChosenBreeds}
+        search={search}
+        setSearch={setSearch}
+        zipCode={zipCode}
+        setZipCode={setZipCode}
+        ageMin={ageMin}
+        setAgeMin={setAgeMin}
+        ageMax={ageMax}
+        setAgeMax={setAgeMax}
+        size={size}
+        setSize={setSize}
+        sort={sort}
+        setSort={setSort}
       />
-      <Input
-        label="Zip Code: "
-        value={zipCode}
-        placeholder="Enter your zip code"
-        onChange={createInputHandler(setZipCode)}
-      />
-      <Input
-        label="Min Age: "
-        value={ageMin}
-        placeholder="Enter the minimum age"
-        onChange={createInputHandler(setAgeMin)}
-      />
-      <Input
-        label="Max Age: "
-        value={ageMax}
-        placeholder="Enter the maximum age"
-        onChange={createInputHandler(setAgeMax)}
-      />
-      <InputSelect
-        value={size}
-        label="Size: "
-        onChange={createSelectHandler(setSize)}
-        options={['', 'test1', 'test2']}
-      />
-      <InputSelect
-        value={sort}
-        label="Sort: "
-        onChange={createSelectHandler(setSort)}
-        options={['Ascending', 'Descending']}
-      />
+      <button onClick={handleSearch}>Search</button>
+      {searchResults.length > 1 && (
+        <SearchResults searchResults={searchResults} />
+      )}
     </div>
   );
 }

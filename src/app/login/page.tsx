@@ -11,14 +11,6 @@ function LoginPage() {
   const { user, isLoggedIn, setLogin } = React.useContext(UserContext);
   const { push } = useRouter();
 
-  function handleNameChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setName(event.target.value);
-  }
-
-  function handleEmailChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setEmail(event.target.value);
-  }
-
   async function handleSubmit(event: React.FormEvent) {
     await loginUser(event, name, email, setLogin);
     setName('');
@@ -28,8 +20,8 @@ function LoginPage() {
 
   return (
     <form onSubmit={handleSubmit}>
-      <Input label="name" value={name} onChange={handleNameChange} />
-      <Input label="email" value={email} onChange={handleEmailChange} />
+      <Input label="name" value={name} setter={setName} />
+      <Input label="email" value={email} setter={setEmail} />
       <button type="submit">Login</button>
     </form>
   );

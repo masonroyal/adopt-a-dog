@@ -24,13 +24,13 @@ export async function loginUser(
 ) {
   event.preventDefault();
 
-  const response = await fetch('/api/user/login', {
+  const response = await fetch(`${API_ENDPOINT}/auth/login`, {
     method: 'POST',
-    body: JSON.stringify({ name, email }),
     credentials: 'include',
     headers: {
       'Content-Type': 'application/json',
     },
+    body: JSON.stringify({ name, email }),
   });
 
   if (!response.ok) {
@@ -43,8 +43,9 @@ export async function loginUser(
 }
 
 export async function logoutUser() {
-  const response = await fetch(`${API_ENDPOINT}/auth/login`, {
+  const response = await fetch(`${API_ENDPOINT}/auth/logout`, {
     method: 'POST',
+    credentials: 'include',
   });
 
   console.log({ response });
