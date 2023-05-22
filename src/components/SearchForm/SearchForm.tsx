@@ -7,6 +7,7 @@ import Input from '@/components/Input/Input';
 import styles from './SearchForm.module.scss';
 import InputSelect from '../InputSelect/InputSelect';
 import InputMultiSelect from '../InputMultiSelect/InputMultiSelect';
+import Button from '../Button/Button';
 
 interface SearchContainerProps {
   breeds: string[];
@@ -24,6 +25,7 @@ interface SearchContainerProps {
   setSize: React.Dispatch<React.SetStateAction<string>>;
   sort: string;
   setSort: React.Dispatch<React.SetStateAction<string>>;
+  handleSearch: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 function SearchContainer({
@@ -42,11 +44,12 @@ function SearchContainer({
   setSize,
   sort,
   setSort,
+  handleSearch,
 }: SearchContainerProps) {
   const { user, isLoggedIn } = React.useContext(UserContext);
 
   return (
-    <div className={styles.wrapper}>
+    <form className={styles.wrapper} onSubmit={handleSearch}>
       <Input
         label="Search: "
         value={search}
@@ -89,7 +92,8 @@ function SearchContainer({
         options={breeds}
         setter={setChosenBreeds}
       />
-    </div>
+      <Button type="submit">Search</Button>
+    </form>
   );
 }
 

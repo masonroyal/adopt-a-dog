@@ -28,7 +28,6 @@ function SearchContainer({ breeds }: SearchContainerProps) {
   const [ageMax, setAgeMax] = React.useState('');
   const [size, setSize] = React.useState('');
   const [sort, setSort] = React.useState('');
-  
 
   function createParameters() {
     //https://frontend-take-home-service.fetch.com/dogs?breeds=Pug&breeds=Beagle&ageMin=4&ageMax=12&size=Small&sort=Ascending
@@ -107,7 +106,8 @@ function SearchContainer({ breeds }: SearchContainerProps) {
     }
   }
 
-  async function handleSearch() {
+  async function handleSearch(e: React.FormEvent<HTMLFormElement>) {
+    e.preventDefault();
     await searchDogs();
   }
 
@@ -129,8 +129,8 @@ function SearchContainer({ breeds }: SearchContainerProps) {
         setSize={setSize}
         sort={sort}
         setSort={setSort}
+        handleSearch={handleSearch}
       />
-      <button onClick={handleSearch}>Search</button>
       {searchResults.length > 1 && (
         <SearchResults searchResults={searchResults} />
       )}
