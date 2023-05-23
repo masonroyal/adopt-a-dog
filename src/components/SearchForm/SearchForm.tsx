@@ -22,8 +22,6 @@ interface SearchFormProps {
   setAgeMax: React.Dispatch<React.SetStateAction<string>>;
   size: string;
   setSize: React.Dispatch<React.SetStateAction<string>>;
-  sort: string;
-  setSort: React.Dispatch<React.SetStateAction<string>>;
   handleSearch: (e: React.FormEvent<HTMLFormElement>) => void;
   city: string;
   setCity: React.Dispatch<React.SetStateAction<string>>;
@@ -35,8 +33,12 @@ interface SearchFormProps {
   setGeo: React.Dispatch<React.SetStateAction<any>>;
   map: any;
   setMap: React.Dispatch<React.SetStateAction<any>>;
-  searchMethod: boolean;
-  setSearchMethod: React.Dispatch<React.SetStateAction<boolean>>;
+  searchMethod: string;
+  setSearchMethod: React.Dispatch<React.SetStateAction<string>>;
+  sortField: string;
+  setSortField: React.Dispatch<React.SetStateAction<string>>;
+  sortDirection: string;
+  setSortDirection: React.Dispatch<React.SetStateAction<string>>;
 }
 
 function SearchForm({
@@ -51,8 +53,6 @@ function SearchForm({
   setAgeMax,
   size,
   setSize,
-  sort,
-  setSort,
   handleSearch,
   city,
   setCity,
@@ -66,6 +66,10 @@ function SearchForm({
   setMap,
   searchMethod,
   setSearchMethod,
+  sortField,
+  setSortField,
+  sortDirection,
+  setSortDirection,
 }: SearchFormProps) {
   const { user, isLoggedIn } = React.useContext(UserContext);
 
@@ -88,35 +92,46 @@ function SearchForm({
         setSearchMethod={setSearchMethod}
       />
       <h3>Filters: </h3>
-      <Input
-        label="Min Age: "
-        value={ageMin}
-        placeholder="Enter the minimum age"
-        setter={setAgeMin}
-      />
-      <Input
-        label="Max Age: "
-        value={ageMax}
-        placeholder="Enter the maximum age"
-        setter={setAgeMax}
+      <div className={styles.ageSelection}>
+        <Input
+          label="Min Age: "
+          value={ageMin}
+          placeholder="Enter the minimum age"
+          setter={setAgeMin}
+        />
+        <Input
+          label="Max Age: "
+          value={ageMax}
+          placeholder="Enter the maximum age"
+          setter={setAgeMax}
+        />
+      </div>
+
+      <div className={styles.sortSelection}>
+        <InputSelect
+          value={sortField}
+          label="Sort by: "
+          setter={setSortField}
+          options={['Breed', 'Age']}
+        />
+        <InputSelect
+          value={sortDirection}
+          label="Sort direction: "
+          setter={setSortDirection}
+          options={['Ascending', 'Descending']}
+        />
+      </div>
+      <InputMultiSelect
+        label="Breed: "
+        value={chosenBreeds}
+        options={breeds}
+        setter={setChosenBreeds}
       />
       <InputSelect
         value={size}
         label="Number of results: "
         setter={setSize}
         options={['25', '50', '100']}
-      />
-      <InputSelect
-        value={sort}
-        label="Sort: "
-        setter={setSort}
-        options={['', 'Ascending', 'Descending']}
-      />
-      <InputMultiSelect
-        label="Breed: "
-        value={chosenBreeds}
-        options={breeds}
-        setter={setChosenBreeds}
       />
       <Button type="submit">Search</Button>
     </form>

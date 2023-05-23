@@ -20,8 +20,8 @@ test('renders without crashing', () => {
       setAgeMax={jest.fn()}
       size=""
       setSize={jest.fn()}
-      sort=""
-      setSort={jest.fn()}
+      sortField=""
+      setsortField={jest.fn()}
       handleSearch={mockHandleSearch}
     />
   );
@@ -50,8 +50,8 @@ test('calls setter functions when input value changes', async () => {
       setAgeMax={jest.fn()}
       size=""
       setSize={jest.fn()}
-      sort=""
-      setSort={jest.fn()}
+      sortField=""
+      setsortField={jest.fn()}
       handleSearch={mockHandleSearch}
     />
   );
@@ -81,8 +81,8 @@ test('calls handleSearch when the form is submitted', async () => {
       setAgeMax={jest.fn()}
       size=""
       setSize={jest.fn()}
-      sort=""
-      setSort={jest.fn()}
+      sortField=""
+      setsortField={jest.fn()}
       handleSearch={mockHandleSearch}
     />
   );
