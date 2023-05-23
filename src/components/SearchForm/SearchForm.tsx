@@ -9,7 +9,7 @@ import InputSelect from '../InputSelect/InputSelect';
 import InputMultiSelect from '../InputMultiSelect/InputMultiSelect';
 import Button from '../Button/Button';
 
-interface SearchContainerProps {
+interface SearchFormProps {
   breeds: string[];
   chosenBreeds: string[];
   setChosenBreeds: React.Dispatch<React.SetStateAction<string[]>>;
@@ -28,7 +28,7 @@ interface SearchContainerProps {
   handleSearch: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
-function SearchContainer({
+function SearchForm({
   breeds,
   chosenBreeds,
   setChosenBreeds,
@@ -45,7 +45,7 @@ function SearchContainer({
   sort,
   setSort,
   handleSearch,
-}: SearchContainerProps) {
+}: SearchFormProps) {
   const { user, isLoggedIn } = React.useContext(UserContext);
 
   return (
@@ -97,4 +97,4 @@ function SearchContainer({
   );
 }
 
-export default SearchContainer;
+export default SearchForm;

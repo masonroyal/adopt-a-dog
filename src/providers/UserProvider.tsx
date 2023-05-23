@@ -1,6 +1,7 @@
 'use client';
 import React from 'react';
 import { API_ENDPOINT } from '@utils/constants';
+import isValidEmail from '@/utils/validEmail';
 
 interface UserContextProps {
   user: string | null;
@@ -23,6 +24,10 @@ export async function loginUser(
   setLogin: (user: string | null, loggedIn: boolean) => void
 ) {
   event.preventDefault();
+  
+  if (!isValidEmail(email)) {
+    throw new Error('Invalid email');
+  };
 
   const response = await fetch(`${API_ENDPOINT}/auth/login`, {
     method: 'POST',
@@ -39,7 +44,7 @@ export async function loginUser(
 
   setLogin(name, true);
 
-  return;
+  return response;
 }
 
 export async function logoutUser() {

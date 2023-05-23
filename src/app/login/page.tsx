@@ -9,7 +9,8 @@ function LoginPage() {
   const [name, setName] = React.useState('');
   const [email, setEmail] = React.useState('');
   const { user, isLoggedIn, setLogin } = React.useContext(UserContext);
-  const { push } = useRouter();
+  const router = useRouter();
+  const { push } = router;
 
   async function handleSubmit(event: React.FormEvent) {
     await loginUser(event, name, email, setLogin);
@@ -19,9 +20,26 @@ function LoginPage() {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
-      <Input label="name" value={name} setter={setName} />
-      <Input label="email" value={email} setter={setEmail} />
+    <form onSubmit={handleSubmit} data-testid="login-form">
+      <Input
+        label="Name: "
+        id="name"
+        value={name}
+        setter={setName}
+        placeholder="Name"
+        required={true}
+        pattern="^[a-zA-Z]+$"
+        title="Only letters are accepted"
+      />
+      <Input
+        label="Email: "
+        type="email"
+        id="email"
+        value={email}
+        setter={setEmail}
+        placeholder="Email"
+        required={true}
+      />
       <button type="submit">Login</button>
     </form>
   );

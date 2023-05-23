@@ -7,6 +7,7 @@ import styles from './SearchContainer.module.scss';
 import SearchForm from '@/components/SearchForm';
 import { API_ENDPOINT } from '@/utils/constants';
 import SearchResults from '../SearchResults/SearchResults';
+import Button from '../Button/Button';
 
 interface SearchContainerProps {
   breeds: string[];
@@ -14,12 +15,10 @@ interface SearchContainerProps {
 
 function SearchContainer({ breeds }: SearchContainerProps) {
   const { user, isLoggedIn } = React.useContext(UserContext);
-  const [dogIds, setDogIds] = React.useState({
-    prev: null,
-    next: null,
-    resultIds: [],
-  });
+
   const [searchResults, setSearchResults] = React.useState([]);
+  const [nextPage, setNextPage] = React.useState('');
+  const [prevPage, setPrevPage] = React.useState('');
 
   const [chosenBreeds, setChosenBreeds] = React.useState<string[]>([]);
   const [search, setSearch] = React.useState('');
@@ -52,7 +51,7 @@ function SearchContainer({ breeds }: SearchContainerProps) {
     return parameters;
   }
 
-  async function searchDogs() {
+  async function getDogIds() {
     try {
       const parameters = createParameters();
 
@@ -68,23 +67,24 @@ function SearchContainer({ breeds }: SearchContainerProps) {
       );
 
       if (!response.ok) {
-        throw new Error('Error in SearchDogs');
+        throw new Error('Error in getDogIds');
       }
 
       const data = await response.json();
       console.log({ data });
 
-      await getDogsInfo(data);
+      setPrevPage(data.prev);
+      setNextPage(data.next);
+
+      getDogsInfo(data.resultIds);
     } catch (error) {
       console.error('Error: ', error);
     }
   }
 
-  async function getDogsInfo(dogIds: any) {
+  async function getDogsInfo(ids: string[]) {
     try {
       // TODO: check and limit to 100 dogs
-      const ids = dogIds.resultIds;
-      console.log('ids:', ids);
       const response = await fetch(`${API_ENDPOINT}/dogs`, {
         method: 'POST',
         credentials: 'include',
@@ -106,9 +106,33 @@ function SearchContainer({ breeds }: SearchContainerProps) {
     }
   }
 
+  async function handlePrevAndNext(url: string) {
+    try {
+      const response = await fetch(`${API_ENDPOINT}${url}`, {
+        method: 'GET',
+        credentials: 'include',
+      });
+
+      if (!response.ok) {
+        throw new Error('Error in handlePrevAndNext');
+      }
+
+      const data = await response.json();
+
+      console.log({ data });
+
+      setPrevPage(data.prev);
+      setNextPage(data.next);
+
+      getDogsInfo(data.resultIds);
+    } catch (error) {
+      console.error('Error: ', error);
+    }
+  }
+
   async function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await searchDogs();
+    await getDogIds();
   }
 
   return (
@@ -133,6 +157,16 @@ function SearchContainer({ breeds }: SearchContainerProps) {
       />
       {searchResults.length > 1 && (
         <SearchResults searchResults={searchResults} />
+      )}
+      {prevPage && (
+        <Button url={prevPage} onClick={() => handlePrevAndNext(prevPage)}>
+          Previous
+        </Button>
+      )}
+      {nextPage && (
+        <Button url={nextPage} onClick={() => handlePrevAndNext(nextPage)}>
+          Next
+        </Button>
       )}
     </div>
   );

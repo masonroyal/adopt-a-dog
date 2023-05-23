@@ -9,7 +9,9 @@ interface InputProps {
   placeholder?: string;
   type?: string;
   setter: React.Dispatch<React.SetStateAction<string>>;
-  // onChange: (event: React.ChangeEvent<HTMLInputElement>) => void;
+  pattern?: string;
+  required?: boolean;
+  title?: string;
 }
 
 function Input({
@@ -18,10 +20,12 @@ function Input({
   id,
   className = '',
   placeholder = '',
-  type,
+  type = 'text',
   setter,
-}: // onChange,
-InputProps) {
+  required = false,
+  pattern,
+  title
+}: InputProps) {
   const generatedId = React.useId();
 
   const appliedId = id || generatedId;
@@ -30,8 +34,11 @@ InputProps) {
     <>
       {label && <label htmlFor={appliedId}>{label}</label>}
       <input
+        required={required}
         type={type}
         value={value}
+        title={title}
+        pattern={pattern}
         id={appliedId}
         className={`${styles.button} ${className}`}
         placeholder={placeholder}
