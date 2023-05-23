@@ -1,10 +1,23 @@
-export default async function fetcher(url: string) {
-  const res = await fetch(url, {
-    method: 'GET',
-    credentials: 'include',
-  });
+class FetchError extends Error {
+  info: any;
+  status: number | undefined;
+
+  constructor(message: string, status?: number) {
+    super(message);
+    this.status = status;
+  }
+}
+
+export default async function fetcher(url: string, options: object) {
+  const res = await fetch(url, options);
+
   if (!res.ok) {
-    throw new Error('Error while fetching data');
+    const error = new FetchError(
+      `Error while fetching data. ${res.statusText}`,
+      res.status
+    );
+
+    throw error;
   }
   return res.json();
 }

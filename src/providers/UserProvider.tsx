@@ -24,10 +24,10 @@ export async function loginUser(
   setLogin: (user: string | null, loggedIn: boolean) => void
 ) {
   event.preventDefault();
-  
+
   if (!isValidEmail(email)) {
     throw new Error('Invalid email');
-  };
+  }
 
   const response = await fetch(`${API_ENDPOINT}/auth/login`, {
     method: 'POST',
@@ -43,6 +43,7 @@ export async function loginUser(
   }
 
   setLogin(name, true);
+  console.log({ response });
 
   return response;
 }

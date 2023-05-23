@@ -8,13 +8,12 @@ import styles from './SearchForm.module.scss';
 import InputSelect from '../InputSelect/InputSelect';
 import InputMultiSelect from '../InputMultiSelect/InputMultiSelect';
 import Button from '../Button/Button';
+import SearchLocation from '../SearchLocation/SearchLocation';
 
 interface SearchFormProps {
   breeds: string[];
   chosenBreeds: string[];
   setChosenBreeds: React.Dispatch<React.SetStateAction<string[]>>;
-  search: string;
-  setSearch: React.Dispatch<React.SetStateAction<string>>;
   zipCode: string;
   setZipCode: React.Dispatch<React.SetStateAction<string>>;
   ageMin: string;
@@ -26,14 +25,24 @@ interface SearchFormProps {
   sort: string;
   setSort: React.Dispatch<React.SetStateAction<string>>;
   handleSearch: (e: React.FormEvent<HTMLFormElement>) => void;
+  city: string;
+  setCity: React.Dispatch<React.SetStateAction<string>>;
+  states: string[];
+  setStates: React.Dispatch<React.SetStateAction<string[]>>;
+  distanceSize: string;
+  setDistanceSize: React.Dispatch<React.SetStateAction<string>>;
+  geo: any;
+  setGeo: React.Dispatch<React.SetStateAction<any>>;
+  map: any;
+  setMap: React.Dispatch<React.SetStateAction<any>>;
+  searchMethod: boolean;
+  setSearchMethod: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function SearchForm({
   breeds,
   chosenBreeds,
   setChosenBreeds,
-  search,
-  setSearch,
   zipCode,
   setZipCode,
   ageMin,
@@ -45,23 +54,40 @@ function SearchForm({
   sort,
   setSort,
   handleSearch,
+  city,
+  setCity,
+  states,
+  setStates,
+  distanceSize,
+  setDistanceSize,
+  geo,
+  setGeo,
+  map,
+  setMap,
+  searchMethod,
+  setSearchMethod,
 }: SearchFormProps) {
   const { user, isLoggedIn } = React.useContext(UserContext);
 
   return (
     <form className={styles.wrapper} onSubmit={handleSearch}>
-      <Input
-        label="Search: "
-        value={search}
-        placeholder="Search for a dog"
-        setter={setSearch}
+      <h2>Search for dogs</h2>
+      <h3>Location to search: </h3>
+      <SearchLocation
+        city={city}
+        setCity={setCity}
+        states={states}
+        setStates={setStates}
+        distanceSize={distanceSize}
+        setDistanceSize={setDistanceSize}
+        geo={geo}
+        setGeo={setGeo}
+        map={map}
+        setMap={setMap}
+        searchMethod={searchMethod}
+        setSearchMethod={setSearchMethod}
       />
-      <Input
-        label="Zip Code: "
-        value={zipCode}
-        placeholder="Enter your zip code"
-        setter={setZipCode}
-      />
+      <h3>Filters: </h3>
       <Input
         label="Min Age: "
         value={ageMin}
@@ -97,4 +123,4 @@ function SearchForm({
   );
 }
 
-export default SearchForm;
+export default React.memo(SearchForm);

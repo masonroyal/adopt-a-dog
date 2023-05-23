@@ -1,6 +1,6 @@
 'use client';
 import * as React from 'react';
-import { useRouter } from 'next/navigation';
+import { redirect, useRouter } from 'next/navigation';
 
 import { UserContext, loginUser } from '@/providers/UserProvider';
 import Input from '@/components/Input/Input';
@@ -13,9 +13,11 @@ function LoginPage() {
   const { push } = router;
 
   async function handleSubmit(event: React.FormEvent) {
-    await loginUser(event, name, email, setLogin);
+    const res = await loginUser(event, name, email, setLogin);
+    
     setName('');
     setEmail('');
+
     push('/');
   }
 

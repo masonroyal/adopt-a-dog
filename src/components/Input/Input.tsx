@@ -24,7 +24,7 @@ function Input({
   setter,
   required = false,
   pattern,
-  title
+  title,
 }: InputProps) {
   const generatedId = React.useId();
 
@@ -32,7 +32,7 @@ function Input({
 
   return (
     <>
-      {label && <label htmlFor={appliedId}>{label}</label>}
+      <label htmlFor={appliedId}>{label}</label>
       <input
         required={required}
         type={type}
