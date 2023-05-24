@@ -10,16 +10,22 @@ import { API_ENDPOINT } from '@/utils/constants';
 import SearchResults from '../SearchResults/SearchResults';
 import Button from '../Button/Button';
 import fetcher from '@/utils/fetcher';
+import FavoriteDogs from '../FavoriteDogs/FavoriteDogs';
+import { Dog } from '@/types';
 
 interface SearchContainerProps {
   breeds: string[];
 }
 
 interface GeoBounds {
-  top: number;
-  right: number;
-  bottom: number;
-  left: number;
+  top_left: {
+    lat: number;
+    lon: number;
+  };
+  bottom_right: {
+    lat: number;
+    lon: number;
+  };
 }
 
 function SearchContainer({ breeds }: SearchContainerProps) {
@@ -40,10 +46,60 @@ function SearchContainer({ breeds }: SearchContainerProps) {
   // distance params
   const [city, setCity] = React.useState('');
   const [states, setStates] = React.useState<string[]>([]);
-  const [distanceSize, setDistanceSize] = React.useState('');
   const [map, setMap] = React.useState();
   const [geo, setGeo] = React.useState<GeoBounds | null>(null);
   const [searchMethod, setSearchMethod] = React.useState('City/State');
+
+  const [favoriteDogs, setFavoriteDogs] = React.useState<Dog[]>([]);
+
+  function handleSettingFavorites(dog: Dog) {
+    // TODO: where did I get the number 10? Is it correct?
+    if (favoriteDogs.length > 10) {
+      throw new Error('You can only have 10 favorites');
+    }
+
+    const dogId = dog.id;
+
+    const newArray = [...favoriteDogs];
+    // iterate through array of obj
+    for (const currentDog of newArray) {
+      // if current dog's id is equal to dogId
+      if (currentDog.id === dogId) {
+        // remove current dog from array
+        const index = newArray.indexOf(currentDog);
+        newArray.splice(index, 1);
+        setFavoriteDogs(newArray);
+        return;
+      }
+    }
+
+    newArray.push(dog);
+
+    setFavoriteDogs(newArray);
+  }
+
+  async function submitFavoriteDogs() {
+    try {
+      const response = await fetch(`${API_ENDPOINT}/dogs/match`, {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(favoriteDogs),
+      });
+
+      if (!response.ok) {
+        throw new Error('Error submitting favorite dogs');
+      }
+
+      const data = await response.json();
+
+      return data;
+    } catch (error) {
+      console.error('Error submitting favorite dogs: ', error);
+    }
+  }
 
   function createParameters() {
     let parameters = '';
@@ -232,8 +288,17 @@ function SearchContainer({ breeds }: SearchContainerProps) {
         searchMethod={searchMethod}
         setSearchMethod={setSearchMethod}
       />
+      {favoriteDogs.length > 0 && (
+        <FavoriteDogs
+          favoriteDogs={favoriteDogs}
+          submitFavoriteDogs={submitFavoriteDogs}
+        />
+      )}
       {searchResults.length > 1 && (
-        <SearchResults searchResults={searchResults} />
+        <SearchResults
+          searchResults={searchResults}
+          handleSettingFavorites={handleSettingFavorites}
+        />
       )}
       {prevPage && (
         <Button url={prevPage} onClick={() => handlePrevAndNext(prevPage)}>

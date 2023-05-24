@@ -1,23 +1,19 @@
 import * as React from 'react';
-
-import styles from './SearchResults.module.scss';
-import Image from 'next/image';
 import Card from '../Card/Card';
-import { Dog } from '@/types';
-import InputCheckbox from '../InputCheckbox/InputCheckbox';
 
-interface SearchResultsProps {
-  searchResults: Dog[];
-  handleSettingFavorites: (dog: Dog) => void;
+import styles from './FavoriteDogs.module.scss';
+import Image from 'next/image';
+import { Dog } from '@/types';
+
+interface FavoriteDogsProps {
+  favoriteDogs: Dog[];
+  submitFavoriteDogs: (dog: Dog) => void;
 }
 
-function SearchResults({
-  searchResults,
-  handleSettingFavorites,
-}: SearchResultsProps) {
+function FavoriteDogs({ favoriteDogs, submitFavoriteDogs }: FavoriteDogsProps) {
   return (
-    <div className={styles.wrapper}>
-      {searchResults.map((dog) => {
+    <>
+      {favoriteDogs.map((dog) => {
         return (
           <Card key={dog.id} className={styles.dogContainer}>
             <div className={styles.cardTop}>
@@ -33,19 +29,12 @@ function SearchResults({
               <div>Breed: {dog.breed}</div>
               <div>Age: {dog.age}</div>
               <div>Zip: {dog.zip_code}</div>
-              <InputCheckbox
-                label="Select"
-                name="favorite"
-                value={dog.id}
-                data={dog}
-                onToggle={handleSettingFavorites}
-              />
             </div>
           </Card>
         );
       })}
-    </div>
+    </>
   );
 }
 
-export default SearchResults;
+export default FavoriteDogs;
