@@ -13,6 +13,7 @@ interface FavoriteDogsProps {
 }
 
 function FavoriteDogs({ favoriteDogs, submitFavoriteDogs }: FavoriteDogsProps) {
+  // TODO: deselect and clear favorite dogs
   return (
     <div className={styles.wrapper}>
       {favoriteDogs.map((dog) => {

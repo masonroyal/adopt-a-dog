@@ -1,0 +1,15 @@
+.wrapper {
+}
+
+.input {
+  margin-bottom: 1em;
+  padding: 1em;
+  border: none;
+  border-radius: 0.25rem;
+  background-color: #eee;
+
+  &:focus {
+    outline: none;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  }
+}

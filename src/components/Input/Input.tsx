@@ -40,7 +40,7 @@ function Input({
         title={title}
         pattern={pattern}
         id={appliedId}
-        className={`${styles.button} ${className}`}
+        className={`${styles.input} ${className}`}
         placeholder={placeholder}
         onChange={(e) => {
           setter(e.target.value);

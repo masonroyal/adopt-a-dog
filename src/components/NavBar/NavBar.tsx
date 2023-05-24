@@ -7,6 +7,8 @@ import { UserContext } from '@/providers/UserProvider';
 function NavBar() {
   const { user, isLoggedIn } = React.useContext(UserContext);
 
+  //TODO: implement sign out
+
   return (
     <div className={styles.wrapper}>
       This is the nav
