@@ -1,37 +1,28 @@
 'use client';
-
 import * as React from 'react';
 import { UserContext } from '@/providers/UserProvider';
 import useSWR from 'swr';
 
 import styles from './SearchContainer.module.scss';
+
 import SearchForm from '@/components/SearchForm';
 import { API_ENDPOINT } from '@/utils/constants';
 import SearchResults from '../SearchResults/SearchResults';
 import Button from '../Button/Button';
 import fetcher from '@/utils/fetcher';
 import FavoriteDogs from '../FavoriteDogs/FavoriteDogs';
-import { Dog } from '@/types';
+import { Dog, GeoBounds } from '@/types';
 import { toast } from 'react-hot-toast';
 import MatchedDog from '../MatchedDog/MatchedDog';
+import { useRouter } from 'next/navigation';
+import { getDogIds, getDogsInfo } from '@/utils/searchHelpers';
 
 interface SearchContainerProps {}
-
-interface GeoBounds {
-  top_left: {
-    lat: number;
-    lon: number;
-  };
-  bottom_right: {
-    lat: number;
-    lon: number;
-  };
-}
 
 function SearchContainer({}: SearchContainerProps) {
   const { user, isLoggedIn } = React.useContext(UserContext);
 
-  const [searchResults, setSearchResults] = React.useState([]);
+  const [searchResults, setSearchResults] = React.useState<Dog[]>([]);
   const [nextPage, setNextPage] = React.useState('');
   const [prevPage, setPrevPage] = React.useState('');
 
@@ -52,6 +43,8 @@ function SearchContainer({}: SearchContainerProps) {
   const [favoriteDogs, setFavoriteDogs] = React.useState<Dog[]>([]);
 
   const [matchedDog, setMatchedDog] = React.useState<Dog | null>(null);
+
+  const { push } = useRouter();
 
   const fetchOptions = {
     method: 'GET',
@@ -74,8 +67,10 @@ function SearchContainer({}: SearchContainerProps) {
 
     console.log('Error Status:', error.status);
     if (error.status === 401) {
-      // TODO: pop up saying please log in
-      // push('/login');
+      // TODO: how to redirect without having the error on first log in?
+      toast.error('Please log in to view this page');
+      localStorage.setItem('user', '');
+      localStorage.setItem('isLoggedIn', String(false));
     }
 
     return <div>Failed to load</div>;
@@ -113,151 +108,6 @@ function SearchContainer({}: SearchContainerProps) {
     setFavoriteDogs(newArray);
   }
 
-  async function submitFavoriteDogs() {
-    try {
-      const response = await fetch(`${API_ENDPOINT}/dogs/match`, {
-        method: 'POST',
-        credentials: 'include',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(favoriteDogs),
-      });
-
-      if (!response.ok) {
-        throw new Error('Post request did not complete successfully');
-      }
-
-      const data = await response.json();
-
-      console.log('matched dog: ', data);
-      console.log(data.match);
-
-      setMatchedDog(data.match);
-
-      return data;
-    } catch (error) {
-      toast.error('Error submitting selected dogs');
-      console.error('Error submitting selected dogs: ', error);
-    }
-  }
-
-  function createParameters() {
-    let parameters = '';
-    if (chosenBreeds.length > 0) {
-      for (let i = 0; i < chosenBreeds.length; i++) {
-        parameters += `&breeds=${chosenBreeds[i]}`;
-      }
-    }
-    if (ageMin !== '') {
-      parameters += `&ageMin=${ageMin}`;
-    }
-    if (ageMax !== '') {
-      parameters += `&ageMax=${ageMax}`;
-    }
-    if (size !== '') {
-      parameters += `&size=${size}`;
-    }
-
-    const sortBy = sortField === 'breed' ? 'breed' : 'age';
-    const sortMethod = sortDirection === 'Ascending' ? 'asc' : 'desc';
-
-    parameters += `&sort=${sortBy}:${sortMethod}`;
-
-    return parameters;
-  }
-
-  async function getDogIds() {
-    try {
-      // get locations
-      const locationResponse = await fetch(`${API_ENDPOINT}/locations/search`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        credentials: 'include',
-        body: JSON.stringify({
-          city: city && searchMethod === 'City/State' ? city : null,
-          states:
-            states.length > 0 && searchMethod === 'City/State' ? states : null,
-          size: 100,
-          geoBoundingBox: geo && searchMethod === 'Map' ? geo : null,
-        }),
-      });
-
-      if (!locationResponse.ok) {
-        throw new Error('Error in location search');
-      }
-
-      let zipCodes = [];
-
-      if (city || states.length > 0 || (geo && searchMethod === 'Map')) {
-        const locationData = await locationResponse.json();
-        console.log({ locationData });
-
-        zipCodes = locationData.results.map(
-          (location: { zip_code: string }) => location.zip_code
-        );
-      }
-
-      let parameters = createParameters();
-
-      for (let i = 0; i < zipCodes.length; i++) {
-        parameters += `&zipCodes=${zipCodes[i]}`;
-      }
-
-      const response = await fetch(
-        `${API_ENDPOINT}/dogs/search?${parameters}`,
-        {
-          method: 'GET',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          credentials: 'include',
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error('Error in getDogIds');
-      }
-
-      const data = await response.json();
-      console.log({ data });
-
-      setPrevPage(data.prev);
-      setNextPage(data.next);
-
-      getDogsInfo(data.resultIds);
-    } catch (error) {
-      toast.error('Error loading dogs. Please try again');
-      console.error('Error: ', error);
-    }
-  }
-
-  async function getDogsInfo(ids: string[]) {
-    try {
-      // TODO: check and limit to 100 dogs
-      const response = await fetch(`${API_ENDPOINT}/dogs`, {
-        method: 'POST',
-        credentials: 'include',
-        body: JSON.stringify(ids),
-        headers: {
-          'Content-Type': 'application/json',
-        },
-      });
-
-      if (!response.ok) {
-        throw new Error('Error in getDogsInfo');
-      }
-
-      const data = await response.json();
-      setSearchResults(data);
-    } catch (error) {
-      toast.error('Error loading dogs. Please try again');
-      console.error('Error: ', error);
-    }
-  }
-
   async function handlePrevAndNext(url: string) {
     try {
       // remove square brackets from url
@@ -283,7 +133,7 @@ function SearchContainer({}: SearchContainerProps) {
       setPrevPage(data.prev);
       setNextPage(data.next);
 
-      getDogsInfo(data.resultIds);
+      getDogsInfo(data.resultIds, setSearchResults);
     } catch (error) {
       console.error('Error: ', error);
     }
@@ -291,7 +141,21 @@ function SearchContainer({}: SearchContainerProps) {
 
   async function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await getDogIds();
+    await getDogIds(
+      searchMethod,
+      city,
+      states,
+      geo,
+      chosenBreeds,
+      ageMin,
+      ageMax,
+      size,
+      sortField,
+      sortDirection,
+      setPrevPage,
+      setNextPage,
+      setSearchResults
+    );
   }
 
   return (
@@ -327,7 +191,7 @@ function SearchContainer({}: SearchContainerProps) {
       {favoriteDogs.length > 0 && (
         <FavoriteDogs
           favoriteDogs={favoriteDogs}
-          submitFavoriteDogs={submitFavoriteDogs}
+          setMatchedDog={setMatchedDog}
         />
       )}
       {searchResults.length > 1 && (
