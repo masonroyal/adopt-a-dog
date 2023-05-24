@@ -98,7 +98,9 @@ function SearchContainer({ breeds }: SearchContainerProps) {
         const locationData = await locationResponse.json();
         console.log({ locationData });
 
-        zipCodes = locationData.results.map((location) => location.zip_code);
+        zipCodes = locationData.results.map(
+          (location: { zip_code: string }) => location.zip_code
+        );
 
         console.log({ zipCodes });
       }
@@ -207,8 +209,6 @@ function SearchContainer({ breeds }: SearchContainerProps) {
         breeds={breeds}
         chosenBreeds={chosenBreeds}
         setChosenBreeds={setChosenBreeds}
-        zipCode={zipCode}
-        setZipCode={setZipCode}
         ageMin={ageMin}
         setAgeMin={setAgeMin}
         ageMax={ageMax}
@@ -225,8 +225,6 @@ function SearchContainer({ breeds }: SearchContainerProps) {
         setCity={setCity}
         states={states}
         setStates={setStates}
-        distanceSize={distanceSize}
-        setDistanceSize={setDistanceSize}
         map={map}
         setMap={setMap}
         geo={geo}

@@ -2,21 +2,24 @@ import * as React from 'react';
 
 import styles from './InputRadioButton.module.scss';
 
+interface InputRadioButtonProps {
+  options: string[];
+  legend: string;
+  name: string;
+  value: string;
+  id?: string;
+  setter: React.Dispatch<React.SetStateAction<string>>;
+}
+
 function InputRadioButton({
   options,
   legend,
   name,
-  label,
   value,
   setter,
   id,
   ...delegated
-}) {
-  const generatedId = React.useId();
-  const appliedId = id || generatedId;
-
-  const [option1, option2] = options;
-
+}: InputRadioButtonProps) {
   return (
     <>
       <legend>{legend}</legend>
@@ -32,13 +35,19 @@ function InputRadioButton({
           </React.Fragment>
         );
       })}
-
-      <label htmlFor={appliedId}>{label}</label>
     </>
   );
 }
 
-function RadioButton({ option, id, name, value, setter }) {
+interface RadioButtonProps {
+  option: string;
+  id?: string;
+  name: string;
+  value: string;
+  setter: React.Dispatch<React.SetStateAction<string>>;
+}
+
+function RadioButton({ option, id, name, value, setter }: RadioButtonProps) {
   const generatedId = React.useId();
   const appliedId = id || generatedId;
 

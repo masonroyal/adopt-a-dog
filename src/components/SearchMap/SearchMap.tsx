@@ -1,20 +1,16 @@
 import * as React from 'react';
-import {
-  MapContainer,
-  Marker,
-  Popup,
-  TileLayer,
-  useMap,
-  useMapEvents,
-} from 'react-leaflet';
+import { MapContainer, TileLayer, useMap, useMapEvents } from 'react-leaflet';
 import styles from './SearchMap.module.scss';
 import 'leaflet/dist/leaflet.css';
 import { LatLng } from 'leaflet';
 
-const zoom = 13;
+interface SearchMapProps {
+  setGeo: React.Dispatch<{}>;
+}
 
-function SearchMap({ setGeo }) {
+function SearchMap({ setGeo }: SearchMapProps) {
   const center = new LatLng(33.5088, -86.8084);
+  const zoom = 13;
 
   return (
     <div>
@@ -23,23 +19,22 @@ function SearchMap({ setGeo }) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <DisplayPosition center={center} setGeo={setGeo} />
+        <DisplayPosition setGeo={setGeo} />
       </MapContainer>
     </div>
   );
 }
 
-function DisplayPosition({ center, setGeo }) {
+interface DisplayPositionProps {
+  setGeo: React.Dispatch<{}>;
+}
+
+function DisplayPosition({ setGeo }: DisplayPositionProps) {
   const map = useMap();
-  const [position, setPosition] = React.useState(map.getCenter());
 
   useMapEvents({
     move() {
-      setPosition(map.getCenter());
-
       const bounds = map.getBounds();
-      const topLeft = bounds.getNorthWest();
-      const bottomRight = bounds.getSouthEast();
 
       setGeo({
         top_left: {
@@ -54,15 +49,16 @@ function DisplayPosition({ center, setGeo }) {
     },
   });
 
-  const onClick = React.useCallback(() => {
-    map.setView(center, zoom);
-  }, [map, center]);
+  // const onClick = React.useCallback(() => {
+  //   map.setView(center, zoom);
+  // }, [map, center]);
 
   return (
     <div>
       <p>
-        latitude: {position.lat.toFixed(4)}, longitude:{' '}
-        {position.lng.toFixed(4)} <button onClick={onClick}>reset</button>
+        {/* latitude: {position.lat.toFixed(4)}, longitude:{' '}
+        {position.lng.toFixed(4)}
+        <Button onClick={onClick}>reset</Button> */}
       </p>
     </div>
   );

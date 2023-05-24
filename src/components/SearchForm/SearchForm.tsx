@@ -14,8 +14,6 @@ interface SearchFormProps {
   breeds: string[];
   chosenBreeds: string[];
   setChosenBreeds: React.Dispatch<React.SetStateAction<string[]>>;
-  zipCode: string;
-  setZipCode: React.Dispatch<React.SetStateAction<string>>;
   ageMin: string;
   setAgeMin: React.Dispatch<React.SetStateAction<string>>;
   ageMax: string;
@@ -27,8 +25,6 @@ interface SearchFormProps {
   setCity: React.Dispatch<React.SetStateAction<string>>;
   states: string[];
   setStates: React.Dispatch<React.SetStateAction<string[]>>;
-  distanceSize: string;
-  setDistanceSize: React.Dispatch<React.SetStateAction<string>>;
   geo: any;
   setGeo: React.Dispatch<React.SetStateAction<any>>;
   map: any;
@@ -45,8 +41,6 @@ function SearchForm({
   breeds,
   chosenBreeds,
   setChosenBreeds,
-  zipCode,
-  setZipCode,
   ageMin,
   setAgeMin,
   ageMax,
@@ -58,8 +52,6 @@ function SearchForm({
   setCity,
   states,
   setStates,
-  distanceSize,
-  setDistanceSize,
   geo,
   setGeo,
   map,
@@ -82,8 +74,6 @@ function SearchForm({
         setCity={setCity}
         states={states}
         setStates={setStates}
-        distanceSize={distanceSize}
-        setDistanceSize={setDistanceSize}
         geo={geo}
         setGeo={setGeo}
         map={map}

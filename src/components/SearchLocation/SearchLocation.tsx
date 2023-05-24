@@ -8,20 +8,31 @@ import InputMultiSelect from '../InputMultiSelect/InputMultiSelect';
 import SearchMap from '../SearchMap/SearchMap';
 import InputRadioButton from '../InputRadioButton/InputRadioButton';
 
+interface SearchLocationProps {
+  city: string;
+  setCity: React.Dispatch<React.SetStateAction<string>>;
+  states: string[];
+  setStates: React.Dispatch<React.SetStateAction<string[]>>;
+  geo: any;
+  setGeo: React.Dispatch<React.SetStateAction<any>>;
+  map: any;
+  setMap: React.Dispatch<React.SetStateAction<any>>;
+  searchMethod: string;
+  setSearchMethod: React.Dispatch<React.SetStateAction<string>>;
+}
+
 function SearchLocation({
   city,
   setCity,
   states,
   setStates,
-  distanceSize,
-  setDistanceSize,
   geo,
   setGeo,
   map,
   setMap,
   searchMethod,
   setSearchMethod,
-}) {
+}: SearchLocationProps) {
   return (
     <div className={styles.wrapper}>
       <InputRadioButton
@@ -45,7 +56,7 @@ function SearchLocation({
         setter={setStates}
         options={stateAbbreviations}
       />
-      <SearchMap map={map} setMap={setMap} geo={geo} setGeo={setGeo} />
+      <SearchMap setGeo={setGeo} />
     </div>
   );
 }
