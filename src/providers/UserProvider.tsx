@@ -19,7 +19,7 @@ export async function loginUser(
   event: React.FormEvent,
   name: string,
   email: string,
-  setLogin: (user: string | null, loggedIn: boolean) => void
+  setLogin: (user: string, loggedIn: boolean) => void
 ) {
   event.preventDefault();
 
@@ -72,17 +72,27 @@ export async function logoutUser(
 
 function UserProvider({ children }: React.PropsWithChildren<{}>) {
   const [user, setUser] = React.useState<string>(() => {
-    return localStorage.getItem('user') || '';
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('user') || '';
+    }
+    return '';
   });
   const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
-    return localStorage.getItem('isLoggedIn') === 'true' || false;
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('isLoggedIn') === 'true' || false;
+    }
+    return false;
   });
 
   const setLogin = React.useCallback((user: string, loggedIn: boolean) => {
     setUser(user);
-    localStorage.setItem('user', user);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('user', user);
+    }
     setIsLoggedIn(loggedIn);
-    localStorage.setItem('isLoggedIn', String(loggedIn));
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isLoggedIn', String(loggedIn));
+    }
   }, []);
 
   return (

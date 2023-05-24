@@ -1,13 +1,13 @@
 import * as React from 'react';
-import styles from './SearchLocation.module.scss';
-import fetcher from '@/utils/fetcher';
-import InputSelect from '../InputSelect/InputSelect';
-import { API_ENDPOINT, stateAbbreviations } from '@/utils/constants';
 import Input from '../Input/Input';
 import InputMultiSelect from '../InputMultiSelect/InputMultiSelect';
 import SearchMap from '../SearchMap/SearchMap';
 import InputRadioButton from '../InputRadioButton/InputRadioButton';
 import dynamic from 'next/dynamic';
+
+import { stateAbbreviations } from '@/utils/constants';
+
+import styles from './SearchLocation.module.scss';
 
 interface SearchLocationProps {
   city: string;
@@ -61,6 +61,7 @@ function SearchLocation({
         setter={setStates}
         options={stateAbbreviations}
       />
+      {/* {typeof window !== 'undefined' && <SearchMap setGeo={setGeo} />} */}
       <SearchMapWithNoSSR setGeo={setGeo} />
     </div>
   );

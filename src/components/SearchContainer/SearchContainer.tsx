@@ -1,27 +1,24 @@
 'use client';
 import * as React from 'react';
-import { UserContext } from '@/providers/UserProvider';
 import useSWR from 'swr';
-
-import styles from './SearchContainer.module.scss';
+import { useRouter } from 'next/navigation';
 
 import SearchForm from '@/components/SearchForm';
-import { API_ENDPOINT } from '@/utils/constants';
 import SearchResults from '../SearchResults/SearchResults';
 import Button from '../Button/Button';
 import fetcher from '@/utils/fetcher';
 import FavoriteDogs from '../FavoriteDogs/FavoriteDogs';
-import { Dog, GeoBounds } from '@/types';
 import { toast } from 'react-hot-toast';
 import MatchedDog from '../MatchedDog/MatchedDog';
-import { useRouter } from 'next/navigation';
+
 import { getDogIds, getDogsInfo } from '@/utils/searchHelpers';
+import { Dog, GeoBounds } from '@/types';
+import { API_ENDPOINT } from '@/utils/constants';
+import styles from './SearchContainer.module.scss';
 
 interface SearchContainerProps {}
 
 function SearchContainer({}: SearchContainerProps) {
-  const { user, isLoggedIn } = React.useContext(UserContext);
-
   const [searchResults, setSearchResults] = React.useState<Dog[]>([]);
   const [nextPage, setNextPage] = React.useState('');
   const [prevPage, setPrevPage] = React.useState('');
@@ -75,6 +72,7 @@ function SearchContainer({}: SearchContainerProps) {
 
     return <div>Failed to load</div>;
   }
+
   if (isLoading) {
     return <div>Loading...</div>;
   }
