@@ -1,19 +1,42 @@
 'use client';
 import * as React from 'react';
+import { redirect, useRouter } from 'next/navigation';
+
+import { UserContext, logoutUser } from '@/providers/UserProvider';
 
 import styles from './NavBar.module.scss';
-import { UserContext } from '@/providers/UserProvider';
+import Button from '../Button/Button';
+import NavLink from '../NavLink/NavLink';
+import { toast } from 'react-hot-toast';
 
 function NavBar() {
-  const { user, isLoggedIn } = React.useContext(UserContext);
+  const { user, isLoggedIn, setLogin } = React.useContext(UserContext);
+  const router = useRouter();
+  const { push } = router;
+
+  //TODO: implement sign out
+  async function handleLogout() {
+    const status = await logoutUser(setLogin);
+    toast.success('Logout successful');
+    if (status === 200) {
+      push('/login');
+    } else {
+      toast.error('Logout failed');
+    }
+  }
 
   return (
-    <div className={styles.wrapper}>
-      This is the nav
-      <div>
-        {user === null ? <div>Not logged in</div> : <div>Hello {user}!</div>}
+    <nav className={styles.wrapper}>
+      <div className={styles.left}>Adopt a Dog</div>
+
+      <div className={styles.right}>
+        {user === null ? (
+          <NavLink href="/login">Log In</NavLink>
+        ) : (
+          <NavLink onClick={handleLogout}>Logout</NavLink>
+        )}
       </div>
-    </div>
+    </nav>
   );
 }
 

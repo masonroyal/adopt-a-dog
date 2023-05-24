@@ -68,61 +68,67 @@ function SearchForm({
   return (
     <form className={styles.wrapper} onSubmit={handleSearch}>
       <h2>Search for dogs</h2>
-      <h3>Location to search: </h3>
-      <SearchLocation
-        city={city}
-        setCity={setCity}
-        states={states}
-        setStates={setStates}
-        geo={geo}
-        setGeo={setGeo}
-        map={map}
-        setMap={setMap}
-        searchMethod={searchMethod}
-        setSearchMethod={setSearchMethod}
-      />
-      <h3>Filters: </h3>
-      <div className={styles.ageSelection}>
-        <Input
-          label="Min Age: "
-          value={ageMin}
-          placeholder="Enter the minimum age"
-          setter={setAgeMin}
-        />
-        <Input
-          label="Max Age: "
-          value={ageMax}
-          placeholder="Enter the maximum age"
-          setter={setAgeMax}
-        />
-      </div>
+      <div className={styles.searchTop}>
+        <div className={styles.locationSection}>
+          <h3>Location to search: </h3>
+          <SearchLocation
+            city={city}
+            setCity={setCity}
+            states={states}
+            setStates={setStates}
+            geo={geo}
+            setGeo={setGeo}
+            map={map}
+            setMap={setMap}
+            searchMethod={searchMethod}
+            setSearchMethod={setSearchMethod}
+          />
+        </div>
+        <div className={styles.filterSection}>
+          <h3>Filters: </h3>
+          <div className={styles.ageSelection}>
+            <Input
+              label="Min Age: "
+              value={ageMin}
+              placeholder="Enter the minimum age"
+              setter={setAgeMin}
+            />
+            <Input
+              label="Max Age: "
+              value={ageMax}
+              placeholder="Enter the maximum age"
+              setter={setAgeMax}
+            />
+          </div>
 
-      <div className={styles.sortSelection}>
-        <InputSelect
-          value={sortField}
-          label="Sort by: "
-          setter={setSortField}
-          options={['Breed', 'Age']}
-        />
-        <InputSelect
-          value={sortDirection}
-          label="Sort direction: "
-          setter={setSortDirection}
-          options={['Ascending', 'Descending']}
-        />
+          <div className={styles.sortSelection}>
+            <InputSelect
+              value={sortField}
+              label="Sort by: "
+              setter={setSortField}
+              options={['Breed', 'Age']}
+            />
+            <InputSelect
+              value={sortDirection}
+              label="Sort direction: "
+              setter={setSortDirection}
+              options={['Ascending', 'Descending']}
+            />
+          </div>
+          <InputMultiSelect
+            label="Breed: "
+            value={chosenBreeds}
+            options={breeds}
+            setter={setChosenBreeds}
+          />
+          <InputSelect
+            value={size}
+            label="Number of results: "
+            setter={setSize}
+            options={['25', '50', '100']}
+          />
+        </div>
       </div>
-      <InputMultiSelect
-        label="Breed: "
-        value={chosenBreeds}
-        options={breeds}
-        setter={setChosenBreeds}
-      />
-      <InputSelect
-        value={size}
-        label="Number of results: "
-        setter={setSize}
-        options={['25', '50', '100']}
-      />
       <Button type="submit">Search</Button>
     </form>
   );

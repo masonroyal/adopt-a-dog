@@ -1,0 +1,25 @@
+.wrapper {
+  margin: 2rem auto 0 auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: white;
+
+  width: 500px;
+  border-radius: 0.5rem;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+
+  padding: 2rem;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  padding: 2em;
+  border-radius: 8px;
+
+  button {
+    margin-top: 1rem;
+  }
+}

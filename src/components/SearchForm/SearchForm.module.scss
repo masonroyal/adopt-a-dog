@@ -2,6 +2,35 @@
   display: flex;
   flex-direction: column;
   width: 100%;
+  align-items: center;
+  padding: 1em;
+  background-color: white;
   justify-content: center;
   margin: 0 auto 1rem auto;
+}
+
+.searchTop {
+  display: flex;
+}
+
+.locationSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.filterSection {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 500px;
+  margin: 0 auto;
+  padding: 1rem;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
