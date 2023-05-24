@@ -7,6 +7,7 @@ import Input from '../Input/Input';
 import InputMultiSelect from '../InputMultiSelect/InputMultiSelect';
 import SearchMap from '../SearchMap/SearchMap';
 import InputRadioButton from '../InputRadioButton/InputRadioButton';
+import dynamic from 'next/dynamic';
 
 interface SearchLocationProps {
   city: string;
@@ -33,6 +34,10 @@ function SearchLocation({
   searchMethod,
   setSearchMethod,
 }: SearchLocationProps) {
+  const SearchMapWithNoSSR = dynamic(() => import('../SearchMap/SearchMap'), {
+    ssr: false,
+  });
+
   return (
     <div className={styles.wrapper}>
       <InputRadioButton
@@ -56,7 +61,7 @@ function SearchLocation({
         setter={setStates}
         options={stateAbbreviations}
       />
-      <SearchMap setGeo={setGeo} />
+      <SearchMapWithNoSSR setGeo={setGeo} />
     </div>
   );
 }

@@ -15,9 +15,7 @@ import { Dog } from '@/types';
 import { toast } from 'react-hot-toast';
 import MatchedDog from '../MatchedDog/MatchedDog';
 
-interface SearchContainerProps {
-  breeds: string[];
-}
+interface SearchContainerProps {}
 
 interface GeoBounds {
   top_left: {
@@ -30,7 +28,7 @@ interface GeoBounds {
   };
 }
 
-function SearchContainer({ breeds }: SearchContainerProps) {
+function SearchContainer({}: SearchContainerProps) {
   const { user, isLoggedIn } = React.useContext(UserContext);
 
   const [searchResults, setSearchResults] = React.useState([]);
@@ -38,7 +36,6 @@ function SearchContainer({ breeds }: SearchContainerProps) {
   const [prevPage, setPrevPage] = React.useState('');
 
   const [chosenBreeds, setChosenBreeds] = React.useState<string[]>([]);
-  const [zipCode, setZipCode] = React.useState('');
   const [ageMin, setAgeMin] = React.useState('');
   const [ageMax, setAgeMax] = React.useState('');
   const [size, setSize] = React.useState('');
@@ -55,7 +52,37 @@ function SearchContainer({ breeds }: SearchContainerProps) {
   const [favoriteDogs, setFavoriteDogs] = React.useState<Dog[]>([]);
 
   const [matchedDog, setMatchedDog] = React.useState<Dog | null>(null);
-  
+
+  const fetchOptions = {
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    credentials: 'include',
+  };
+
+  const {
+    data: breeds,
+    error,
+    isLoading,
+  } = useSWR(`${API_ENDPOINT}/dogs/breeds`, () =>
+    fetcher(`${API_ENDPOINT}/dogs/breeds`, fetchOptions)
+  );
+
+  if (error) {
+    console.log({ error });
+
+    console.log('Error Status:', error.status);
+    if (error.status === 401) {
+      // TODO: pop up saying please log in
+      // push('/login');
+    }
+
+    return <div>Failed to load</div>;
+  }
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
   function handleSettingFavorites(dog: Dog) {
     // TODO: where did I get the number 10? Is it correct?
