@@ -2,8 +2,8 @@ import * as React from 'react';
 
 import styles from './Button.module.scss';
 
-function Button({ className = '', ...delegated }) {
-  const appliedClassName = `${styles.buttonStyling} ${className}`;
+function Button({ buttonType = 'primary', className = '', ...delegated }) {
+  const appliedClassName = `${styles.buttonStyling} ${styles[buttonType]} ${className}`;
   return <button className={appliedClassName} {...delegated} />;
 }
 

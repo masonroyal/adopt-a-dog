@@ -1,5 +1,3 @@
-$red: red;
-
 $elevation-1: 0px 0.5px 1px hsl(0deg 0% 0% / 0.2),
   0px 1px 2px hsl(0deg 0% 0% / 0.15), 0px 2px 4px hsl(0deg 0% 0% / 0.1);
 
@@ -11,3 +9,29 @@ $elevation-3: 0px 1px 2px hsl(0deg 0% 0% / 0.15),
   0px 2px 4px hsl(0deg 0% 0% / 0.15), 0px 4px 8px hsl(0deg 0% 0% / 0.125),
   0px 8px 16px hsl(0deg 0% 0% / 0.125), 0px 16px 32px hsl(0deg 0% 0% / 0.1),
   0px 32px 64px hsl(0deg 0% 0% / 0.1);
+
+$light-gray: #eee;
+
+// $light: #e5e2c1;
+// $light-accent: #b5acd4;
+// $main: #884791;
+// $dark-accent: #c57daf;
+// $dark: #312532;
+
+// $info-light: #007bff;
+// $info: #2f2334;
+// $success: #5f9064;
+// $warning: #dc802c;
+// $danger: #f44336;
+
+$light: #d8c6b3;
+$light-accent: #efc456;
+$main: #a7312e;
+$dark-accent: #a7312e;
+$dark: #252028;
+
+$info-light: #007bff;
+$info: #27252e;
+$success: #5aa05a;
+$warning: #d79022;
+$danger: #f44336;

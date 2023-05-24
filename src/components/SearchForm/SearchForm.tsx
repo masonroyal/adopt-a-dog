@@ -68,9 +68,9 @@ function SearchForm({
   return (
     <form className={styles.wrapper} onSubmit={handleSearch}>
       <h2>Search for dogs</h2>
-      <h3>Location to search: </h3>
       <div className={styles.searchTop}>
         <div className={styles.locationSection}>
+          <h3>Location to search: </h3>
           <SearchLocation
             city={city}
             setCity={setCity}

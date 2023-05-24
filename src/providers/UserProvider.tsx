@@ -48,19 +48,28 @@ export async function loginUser(
   return response;
 }
 
-export async function logoutUser() {
-  const response = await fetch(`${API_ENDPOINT}/auth/logout`, {
-    method: 'POST',
-    credentials: 'include',
-  });
+export async function logoutUser(
+  setLogin: (user: string | null, loggedIn: boolean) => void
+) {
+  try {
+    const response = await fetch(`${API_ENDPOINT}/auth/logout`, {
+      method: 'POST',
+      credentials: 'include',
+    });
 
-  console.log({ response });
+    console.log({ response });
 
-  const parsedResponse = await response.json();
+    if (!response.ok) {
+      throw new Error('Logout failed');
+    }
 
-  console.log({ parsedResponse });
+    setLogin(null, false);
 
-  return;
+    return response.status;
+  } catch (error) {
+    console.error('Error logging out: ', error);
+    return 'error';
+  }
 }
 
 function UserProvider({ children }: React.PropsWithChildren<{}>) {

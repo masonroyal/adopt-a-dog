@@ -1,16 +1,25 @@
-.wrapper {
-}
-
 .buttonStyling {
-  padding: 1em 2em;
+  padding: 0 1rem;
+  height: 44px;
   border: none;
   border-radius: 4px;
-  background-color: #007bff;
-  color: #fff;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  font-size: 0.9rem;
+}
 
+.primary {
+  background-color: $main;
+  color: $light;
   &:hover {
-    background-color: #0056b3;
+    background-color: lighten($main, 10%);
+  }
+}
+
+.secondary {
+  background-color: $light-accent;
+  color: $main;
+  &:hover {
+    background-color: darken($light-accent, 10%);
   }
 }

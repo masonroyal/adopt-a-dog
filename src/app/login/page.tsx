@@ -28,6 +28,7 @@ function LoginPage() {
 
   return (
     <div className={styles.wrapper}>
+      <h1 className={styles.title}>Log In</h1>
       <form
         onSubmit={handleSubmit}
         data-testid="login-form"
@@ -52,7 +53,7 @@ function LoginPage() {
           placeholder="Email"
           required={true}
         />
-        <Button type="submit">Login</Button>
+        <Button type="submit">Log In</Button>
       </form>
     </div>
   );
