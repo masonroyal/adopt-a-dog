@@ -4,16 +4,14 @@ import { API_ENDPOINT } from '@utils/constants';
 import isValidEmail from '@/utils/validEmail';
 
 interface UserContextProps {
-  user: string | null;
+  user: string;
   isLoggedIn: boolean;
-  setLogin: (user: string | null, loggedIn: boolean) => void;
+  setLogin: (user: string, loggedIn: boolean) => void;
 }
 
-let isLoggedIn = false;
-
 export const UserContext = React.createContext<UserContextProps>({
-  user: null,
-  isLoggedIn,
+  user: '',
+  isLoggedIn: false,
   setLogin: () => {},
 });
 
@@ -21,7 +19,7 @@ export async function loginUser(
   event: React.FormEvent,
   name: string,
   email: string,
-  setLogin: (user: string | null, loggedIn: boolean) => void
+  setLogin: (user: string, loggedIn: boolean) => void
 ) {
   event.preventDefault();
 
@@ -49,7 +47,7 @@ export async function loginUser(
 }
 
 export async function logoutUser(
-  setLogin: (user: string | null, loggedIn: boolean) => void
+  setLogin: (user: string, loggedIn: boolean) => void
 ) {
   try {
     const response = await fetch(`${API_ENDPOINT}/auth/logout`, {
@@ -63,7 +61,7 @@ export async function logoutUser(
       throw new Error('Logout failed');
     }
 
-    setLogin(null, false);
+    setLogin('', false);
 
     return response.status;
   } catch (error) {
@@ -73,16 +71,29 @@ export async function logoutUser(
 }
 
 function UserProvider({ children }: React.PropsWithChildren<{}>) {
-  const [user, setUser] = React.useState<string | null>(null);
-  const [isLoggedIn, setIsLoggedIn] = React.useState(false);
+  const [user, setUser] = React.useState<string>(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('user') || '';
+    }
+    return '';
+  });
+  const [isLoggedIn, setIsLoggedIn] = React.useState(() => {
+    if (typeof window !== 'undefined') {
+      return localStorage.getItem('isLoggedIn') === 'true' || false;
+    }
+    return false;
+  });
 
-  const setLogin = React.useCallback(
-    (user: string | null, loggedIn: boolean) => {
-      setUser(user);
-      setIsLoggedIn(loggedIn);
-    },
-    []
-  );
+  const setLogin = React.useCallback((user: string, loggedIn: boolean) => {
+    setUser(user);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('user', user);
+    }
+    setIsLoggedIn(loggedIn);
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('isLoggedIn', String(loggedIn));
+    }
+  }, []);
 
   return (
     <UserContext.Provider value={{ user, isLoggedIn, setLogin }}>

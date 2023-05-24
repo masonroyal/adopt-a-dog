@@ -12,3 +12,10 @@
 .left {
   font-weight: 600;
 }
+
+.right {
+  display: flex;
+  p {
+    margin-right: 0.5rem;
+  }
+}

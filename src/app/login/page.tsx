@@ -8,6 +8,7 @@ import { toast } from 'react-hot-toast';
 
 import styles from './LoginPage.module.scss';
 import Button from '@/components/Button/Button';
+import { type } from 'os';
 
 function LoginPage() {
   const [name, setName] = React.useState('');

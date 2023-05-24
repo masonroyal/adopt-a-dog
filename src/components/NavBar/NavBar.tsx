@@ -1,11 +1,10 @@
 'use client';
 import * as React from 'react';
-import { redirect, useRouter } from 'next/navigation';
+import { useRouter } from 'next/navigation';
 
 import { UserContext, logoutUser } from '@/providers/UserProvider';
 
 import styles from './NavBar.module.scss';
-import Button from '../Button/Button';
 import NavLink from '../NavLink/NavLink';
 import { toast } from 'react-hot-toast';
 
@@ -30,10 +29,13 @@ function NavBar() {
       <div className={styles.left}>Adopt a Dog</div>
 
       <div className={styles.right}>
-        {user === null ? (
+        {user === '' ? (
           <NavLink href="/login">Log In</NavLink>
         ) : (
-          <NavLink onClick={handleLogout}>Logout</NavLink>
+          <>
+            <p className={styles.user}>Hello {user}!</p>
+            <NavLink onClick={handleLogout}>Logout</NavLink>
+          </>
         )}
       </div>
     </nav>

@@ -1,25 +1,26 @@
 import * as React from 'react';
-import Card from '../Card/Card';
 
 import styles from './FavoriteDogs.module.scss';
-import Image from 'next/image';
 import { Dog } from '@/types';
 import Button from '../Button/Button';
 import DogCard from '../DogCard/DogCard';
+import { submitFavoriteDogs } from '@/utils/searchHelpers';
 
 interface FavoriteDogsProps {
   favoriteDogs: Dog[];
-  submitFavoriteDogs: () => void;
+  setMatchedDog: (dog: Dog) => void;
 }
 
-function FavoriteDogs({ favoriteDogs, submitFavoriteDogs }: FavoriteDogsProps) {
+function FavoriteDogs({ favoriteDogs, setMatchedDog }: FavoriteDogsProps) {
   // TODO: deselect and clear favorite dogs
   return (
     <div className={styles.wrapper}>
       {favoriteDogs.map((dog) => {
         return <DogCard key={dog.id} dog={dog}></DogCard>;
       })}
-      <Button onClick={submitFavoriteDogs}>Submit dogs for matching</Button>
+      <Button onClick={() => submitFavoriteDogs(favoriteDogs, setMatchedDog)}>
+        Submit dogs for matching
+      </Button>
     </div>
   );
 }
