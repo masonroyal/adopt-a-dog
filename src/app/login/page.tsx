@@ -4,6 +4,7 @@ import { redirect, useRouter } from 'next/navigation';
 
 import { UserContext, loginUser } from '@/providers/UserProvider';
 import Input from '@/components/Input/Input';
+import { toast } from 'react-hot-toast';
 
 function LoginPage() {
   const [name, setName] = React.useState('');
@@ -14,9 +15,10 @@ function LoginPage() {
 
   async function handleSubmit(event: React.FormEvent) {
     const res = await loginUser(event, name, email, setLogin);
-    
+
     setName('');
     setEmail('');
+    toast.success('Login successful');
 
     push('/');
   }

@@ -12,6 +12,8 @@ import Button from '../Button/Button';
 import fetcher from '@/utils/fetcher';
 import FavoriteDogs from '../FavoriteDogs/FavoriteDogs';
 import { Dog } from '@/types';
+import { toast } from 'react-hot-toast';
+import MatchedDog from '../MatchedDog/MatchedDog';
 
 interface SearchContainerProps {
   breeds: string[];
@@ -52,6 +54,9 @@ function SearchContainer({ breeds }: SearchContainerProps) {
 
   const [favoriteDogs, setFavoriteDogs] = React.useState<Dog[]>([]);
 
+  const [matchedDog, setMatchedDog] = React.useState<Dog | null>(null);
+  
+
   function handleSettingFavorites(dog: Dog) {
     // TODO: where did I get the number 10? Is it correct?
     if (favoriteDogs.length > 10) {
@@ -69,11 +74,14 @@ function SearchContainer({ breeds }: SearchContainerProps) {
         const index = newArray.indexOf(currentDog);
         newArray.splice(index, 1);
         setFavoriteDogs(newArray);
+        toast.success('Dog removed from favorites');
         return;
       }
     }
 
     newArray.push(dog);
+
+    toast.success('Dog added to favorites!');
 
     setFavoriteDogs(newArray);
   }
@@ -90,14 +98,20 @@ function SearchContainer({ breeds }: SearchContainerProps) {
       });
 
       if (!response.ok) {
-        throw new Error('Error submitting favorite dogs');
+        throw new Error('Post request did not complete successfully');
       }
 
       const data = await response.json();
 
+      console.log('matched dog: ', data);
+      console.log(data.match);
+
+      setMatchedDog(data.match);
+
       return data;
     } catch (error) {
-      console.error('Error submitting favorite dogs: ', error);
+      toast.error('Error submitting selected dogs');
+      console.error('Error submitting selected dogs: ', error);
     }
   }
 
@@ -157,8 +171,6 @@ function SearchContainer({ breeds }: SearchContainerProps) {
         zipCodes = locationData.results.map(
           (location: { zip_code: string }) => location.zip_code
         );
-
-        console.log({ zipCodes });
       }
 
       let parameters = createParameters();
@@ -166,11 +178,6 @@ function SearchContainer({ breeds }: SearchContainerProps) {
       for (let i = 0; i < zipCodes.length; i++) {
         parameters += `&zipCodes=${zipCodes[i]}`;
       }
-
-      console.log(
-        'initial fetch url: ',
-        `${API_ENDPOINT}/dogs/search?${parameters}`
-      );
 
       const response = await fetch(
         `${API_ENDPOINT}/dogs/search?${parameters}`,
@@ -195,6 +202,7 @@ function SearchContainer({ breeds }: SearchContainerProps) {
 
       getDogsInfo(data.resultIds);
     } catch (error) {
+      toast.error('Error loading dogs. Please try again');
       console.error('Error: ', error);
     }
   }
@@ -216,9 +224,9 @@ function SearchContainer({ breeds }: SearchContainerProps) {
       }
 
       const data = await response.json();
-      console.log({ data });
       setSearchResults(data);
     } catch (error) {
+      toast.error('Error loading dogs. Please try again');
       console.error('Error: ', error);
     }
   }
@@ -261,6 +269,7 @@ function SearchContainer({ breeds }: SearchContainerProps) {
 
   return (
     <div className={styles.wrapper}>
+      {matchedDog && <MatchedDog matchedDog={matchedDog} />}
       <SearchForm
         breeds={breeds}
         chosenBreeds={chosenBreeds}

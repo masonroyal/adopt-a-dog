@@ -5,6 +5,7 @@ import Image from 'next/image';
 import Card from '../Card/Card';
 import { Dog } from '@/types';
 import InputCheckbox from '../InputCheckbox/InputCheckbox';
+import DogCard from '../DogCard/DogCard';
 
 interface SearchResultsProps {
   searchResults: Dog[];
@@ -19,29 +20,15 @@ function SearchResults({
     <div className={styles.wrapper}>
       {searchResults.map((dog) => {
         return (
-          <Card key={dog.id} className={styles.dogContainer}>
-            <div className={styles.cardTop}>
-              <Image
-                src={dog.img}
-                alt={dog.breed}
-                width={1000}
-                height={1000}
-                className={styles.dogImage}
-              />
-            </div>
-            <div className={styles.cardBottom}>
-              <div>Breed: {dog.breed}</div>
-              <div>Age: {dog.age}</div>
-              <div>Zip: {dog.zip_code}</div>
-              <InputCheckbox
-                label="Select"
-                name="favorite"
-                value={dog.id}
-                data={dog}
-                onToggle={handleSettingFavorites}
-              />
-            </div>
-          </Card>
+          <DogCard key={dog.id} dog={dog}>
+            <InputCheckbox
+              label="Select"
+              name="favorite"
+              value={dog.id}
+              data={dog}
+              onToggle={handleSettingFavorites}
+            />
+          </DogCard>
         );
       })}
     </div>

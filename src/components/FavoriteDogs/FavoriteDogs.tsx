@@ -4,36 +4,22 @@ import Card from '../Card/Card';
 import styles from './FavoriteDogs.module.scss';
 import Image from 'next/image';
 import { Dog } from '@/types';
+import Button from '../Button/Button';
+import DogCard from '../DogCard/DogCard';
 
 interface FavoriteDogsProps {
   favoriteDogs: Dog[];
-  submitFavoriteDogs: (dog: Dog) => void;
+  submitFavoriteDogs: () => void;
 }
 
 function FavoriteDogs({ favoriteDogs, submitFavoriteDogs }: FavoriteDogsProps) {
   return (
-    <>
+    <div className={styles.wrapper}>
       {favoriteDogs.map((dog) => {
-        return (
-          <Card key={dog.id} className={styles.dogContainer}>
-            <div className={styles.cardTop}>
-              <Image
-                src={dog.img}
-                alt={dog.breed}
-                width={1000}
-                height={1000}
-                className={styles.dogImage}
-              />
-            </div>
-            <div className={styles.cardBottom}>
-              <div>Breed: {dog.breed}</div>
-              <div>Age: {dog.age}</div>
-              <div>Zip: {dog.zip_code}</div>
-            </div>
-          </Card>
-        );
+        return <DogCard key={dog.id} dog={dog}></DogCard>;
       })}
-    </>
+      <Button onClick={submitFavoriteDogs}>Submit dogs for matching</Button>
+    </div>
   );
 }
 
