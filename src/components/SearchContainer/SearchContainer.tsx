@@ -40,6 +40,8 @@ function SearchContainer({}: SearchContainerProps) {
   const [geo, setGeo] = React.useState<GeoBounds | null>(null);
   const [searchMethod, setSearchMethod] = React.useState('City/State');
   const [numResults, setNumResults] = React.useState(0);
+  const [startIndex, setStartIndex] = React.useState(0);
+  const [endIndex, setEndIndex] = React.useState(0);
 
   const [favoriteDogs, setFavoriteDogs] = React.useState<Dog[]>([]);
   const [showFavorites, setShowFavorites] = React.useState(false);
@@ -86,7 +88,6 @@ function SearchContainer({}: SearchContainerProps) {
   }
 
   function handleSettingFavorites(dog: Dog) {
-    // TODO: where did I get the number 10? Is it correct?
     if (favoriteDogs.length > 10) {
       throw new Error('You can only have 10 favorites');
     }
@@ -139,6 +140,14 @@ function SearchContainer({}: SearchContainerProps) {
       setPrevPage(data.prev);
       setNextPage(data.next);
 
+      if (url === nextPage) {
+        setStartIndex(endIndex + 1);
+        setEndIndex(Math.min(endIndex + 25, numResults));
+      } else if (url === prevPage) {
+        setEndIndex(startIndex - 1);
+        setStartIndex(Math.max(1, startIndex - 25));
+      }
+
       getDogsInfo(data.resultIds, setSearchResults);
 
       window.scrollTo({ top: 500, behavior: 'smooth' });
@@ -165,6 +174,9 @@ function SearchContainer({}: SearchContainerProps) {
       setSearchResults,
       setNumResults
     );
+    setStartIndex(1); // Starts at 1 assuming human-friendly numbering (not zero-indexed)
+    const newEndIndex = Math.min(searchResults.length, Number(size) || 25);
+    setEndIndex(newEndIndex);
   }
 
   function resetState() {
@@ -249,11 +261,11 @@ function SearchContainer({}: SearchContainerProps) {
                     <SVGButton
                       IconComponent={ChevronsLeft}
                       className={styles.prev}
-                      onClick={() => handlePrevAndNext(nextPage)}
+                      onClick={() => handlePrevAndNext(prevPage)}
                       text={`Prev ${size || 25}`}
                     />
                   )}
-                  {nextPage && numResults > 25 && (
+                  {nextPage && endIndex < numResults && (
                     <SVGButton
                       IconComponent={ChevronsRight}
                       className={styles.next}
@@ -261,6 +273,9 @@ function SearchContainer({}: SearchContainerProps) {
                       text={`Next ${size || 25}`}
                     />
                   )}
+                </div>
+                <div className={styles.currentResults}>
+                  Showing results {startIndex} - {endIndex} of {numResults}
                 </div>
               </>
             )}
