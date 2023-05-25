@@ -4,3 +4,30 @@
   justify-content: center;
   margin: 0 auto;
 }
+
+.searchResultsContainer {
+  display: flex;
+}
+
+.searchResults {
+  position: relative;
+}
+
+.prev,
+.next {
+  position: fixed;
+  top: 50%;
+  transition: transform 0.2s;
+  &:hover {
+    cursor: pointer;
+    text-shadow: 2px 0 0 black;
+    transform: scale(1.08);
+  }
+}
+.prev {
+  left: calc(50% - 380px);
+}
+
+.next {
+  right: calc(50% - 380px);
+}

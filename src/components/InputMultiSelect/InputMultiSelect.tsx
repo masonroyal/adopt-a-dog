@@ -8,6 +8,7 @@ interface InputMultiSelectProps {
   value: string[];
   options: string[];
   id?: string;
+  className?: string;
   setter: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
@@ -21,11 +22,13 @@ function InputMultiSelect({
   options,
   id,
   value,
+  className = '',
   setter,
 }: InputMultiSelectProps) {
   const generatedId = React.useId();
   const appliedId = id || generatedId;
 
+  const appliedClassName = `${styles.wrapper} ${className}`;
 
   const formattedOptions: Options<Option> = options.map((option) => {
     return {
@@ -46,7 +49,7 @@ function InputMultiSelect({
   }
 
   return (
-    <>
+    <div className={appliedClassName}>
       <label htmlFor={appliedId}>{label}</label>
       <Select
         isMulti
@@ -55,7 +58,7 @@ function InputMultiSelect({
         onChange={handleChange}
         options={formattedOptions}
       />
-    </>
+    </div>
   );
 }
 

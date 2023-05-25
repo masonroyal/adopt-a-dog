@@ -1,3 +1,27 @@
-.wrapper{
+.wrapper {
+  // display: flex;
+}
 
+.buttonHolder {
+  display: flex;
+}
+
+.buttonLabelHolder {
+  display: flex;
+  align-items: center;
+  margin-right: 0.5rem;
+
+  input,
+  label {
+    cursor: pointer;
+  }
+
+  input {
+    margin-right: 0.25rem;
+  }
+}
+
+.radioButton {
+  width: 1rem;
+  height: 1rem;
 }

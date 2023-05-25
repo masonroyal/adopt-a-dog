@@ -65,12 +65,19 @@ function SearchForm({
 }: SearchFormProps) {
   const { user, isLoggedIn } = React.useContext(UserContext);
 
+  const minAgeOptions = [...Array(14).keys()].map((num) => num.toString());
+  const maxAgeOptions = [...Array(16).keys()].map((num) => num.toString());
+
   return (
     <form className={styles.wrapper} onSubmit={handleSearch}>
-      <h2>Search for dogs</h2>
+      <h2>Find your new best friend today!</h2>
+      <p>
+        Select up to 10 dogs. Submit your matches and one will be chosen for you
+        to adopt!
+      </p>
       <div className={styles.searchTop}>
         <div className={styles.locationSection}>
-          <h3>Location to search: </h3>
+          <h4>Location: </h4>
           <SearchLocation
             city={city}
             setCity={setCity}
@@ -85,43 +92,50 @@ function SearchForm({
           />
         </div>
         <div className={styles.filterSection}>
-          <h3>Filters: </h3>
+          <h4>Filters: </h4>
+          <InputMultiSelect
+            className={styles.breedSelect}
+            label="Breed(s): "
+            value={chosenBreeds}
+            options={breeds}
+            setter={setChosenBreeds}
+          />
           <div className={styles.ageSelection}>
-            <Input
+            <InputSelect
+              className={styles.ageSelect}
               label="Min Age: "
               value={ageMin}
-              placeholder="Enter the minimum age"
               setter={setAgeMin}
+              options={minAgeOptions}
             />
-            <Input
+            <InputSelect
+              className={styles.ageSelect}
               label="Max Age: "
               value={ageMax}
-              placeholder="Enter the maximum age"
+              // placeholder="Max age"
               setter={setAgeMax}
+              options={maxAgeOptions}
             />
           </div>
 
           <div className={styles.sortSelection}>
             <InputSelect
+              className={styles.sortSelect}
               value={sortField}
               label="Sort by: "
               setter={setSortField}
               options={['Breed', 'Age']}
             />
             <InputSelect
+              className={styles.sortSelect}
               value={sortDirection}
               label="Sort direction: "
               setter={setSortDirection}
               options={['Ascending', 'Descending']}
             />
           </div>
-          <InputMultiSelect
-            label="Breed: "
-            value={chosenBreeds}
-            options={breeds}
-            setter={setChosenBreeds}
-          />
           <InputSelect
+            className={styles.sizeSelect}
             value={size}
             label="Number of results: "
             setter={setSize}

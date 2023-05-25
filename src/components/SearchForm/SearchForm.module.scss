@@ -3,34 +3,83 @@
   flex-direction: column;
   width: 100%;
   align-items: center;
-  padding: 1em;
+  padding: 1rem;
   background-color: white;
   justify-content: center;
-  margin: 0 auto 1rem auto;
+  margin: 1rem auto 1rem auto;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 0.5rem;
+
+  p {
+    max-width: 60%;
+    text-align: center;
+    margin-bottom: 1rem;
+  }
 }
 
 .searchTop {
   display: flex;
+  margin-bottom: 1rem;
 }
 
 .locationSection {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 500px;
+  width: 300px;
   margin: 0 auto;
   padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
 
 .filterSection {
   display: flex;
   flex-direction: column;
-  width: 100%;
-  max-width: 500px;
-  margin: 0 auto;
+  width: 300px;
+
   padding: 1rem;
   border-radius: 8px;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.breedSelect {
+  margin-bottom: 0.5rem;
+}
+
+.ageSelection {
+  display: flex;
+}
+
+.ageSelect {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.sortSelection {
+  display: flex;
+}
+
+.sortSelect {
+  margin-right: 0.5rem;
+  margin-bottom: 0.5rem;
+}
+
+.sizeSelect {
+  width: 100%;
+}
+
+@media screen and (max-width: $breakpoint-md) {
+  .wrapper {
+    max-width: 440px;
+  }
+  .searchTop {
+    flex-direction: column;
+  }
+}
+@media screen and (max-width: $breakpoint-sm) {
+  .wrapper {
+    min-width: 340px;
+    width: 90%;
+  }
+  .searchTop {
+    flex-direction: column;
+  }
 }

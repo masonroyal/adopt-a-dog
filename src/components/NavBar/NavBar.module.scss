@@ -1,4 +1,7 @@
 .wrapper {
+  position: fixed;
+  z-index: 99999;
+  width: 100%;
   background-color: $main;
   display: flex;
   justify-content: space-between;

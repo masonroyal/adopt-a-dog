@@ -1,3 +1,14 @@
-.wrapper{
-  
+.wrapper {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  input {
+    height: 1rem;
+    width: 1rem;
+    margin-right: 0.25rem;
+    cursor: pointer;
+  }
+  label {
+    cursor: pointer;
+  }
 }

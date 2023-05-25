@@ -7,30 +7,30 @@ import { Dog } from '@/types';
 
 interface DogCardProps {
   dog: Dog;
+  className?: string;
   children?: React.ReactNode;
 }
 
-function DogCard({ dog, children }: DogCardProps) {
+function DogCard({ dog, className = '', children }: DogCardProps) {
+  const appliedClassName = `${className} ${styles.wrapper} `;
   return (
-    <div>
-      <Card key={dog.id} className={styles.dogContainer}>
-        <div className={styles.cardTop}>
-          <Image
-            src={dog.img}
-            alt={dog.breed}
-            width={1000}
-            height={1000}
-            className={styles.dogImage}
-          />
-        </div>
-        <div className={styles.cardBottom}>
-          <div>Breed: {dog.breed}</div>
-          <div>Age: {dog.age}</div>
-          <div>Zip: {dog.zip_code}</div>
-          {children}
-        </div>
-      </Card>
-    </div>
+    <Card key={dog.id} className={appliedClassName}>
+      <div className={styles.cardTop}>
+        <Image
+          src={dog.img}
+          alt={dog.breed}
+          width={1000}
+          height={1000}
+          className={styles.dogImage}
+        />
+      </div>
+      <div className={styles.cardBottom}>
+        <div>Breed: {dog.breed}</div>
+        <div>Age: {dog.age}</div>
+        <div>Zip: {dog.zip_code}</div>
+        {children}
+      </div>
+    </Card>
   );
 }
 

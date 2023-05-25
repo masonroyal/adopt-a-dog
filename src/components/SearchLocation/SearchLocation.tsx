@@ -8,6 +8,7 @@ import dynamic from 'next/dynamic';
 import { stateAbbreviations } from '@/utils/constants';
 
 import styles from './SearchLocation.module.scss';
+import { LatLng } from 'leaflet';
 
 interface SearchLocationProps {
   city: string;
@@ -37,6 +38,12 @@ function SearchLocation({
   const SearchMapWithNoSSR = dynamic(() => import('../SearchMap/SearchMap'), {
     ssr: false,
   });
+  const DisplayResultsWithNoSSR = dynamic(
+    () => import('../SearchMapDisplayPosition/SearchMapDisplayPosition'),
+    {
+      ssr: false,
+    }
+  );
 
   return (
     <div className={styles.wrapper}>
@@ -47,22 +54,30 @@ function SearchLocation({
         value={searchMethod}
         setter={setSearchMethod}
       />
-      <br></br>
-      <Input
-        label="City: "
-        value={city}
-        setter={setCity}
-        placeholder={'Enter a city'}
-      />
-      <br></br>
-      <InputMultiSelect
-        label="State(s): "
-        value={states}
-        setter={setStates}
-        options={stateAbbreviations}
-      />
-      {/* {typeof window !== 'undefined' && <SearchMap setGeo={setGeo} />} */}
-      <SearchMapWithNoSSR setGeo={setGeo} />
+      {searchMethod === 'City/State' && (
+        <div className={styles.cityStateSearch}>
+          <Input
+            label="City: "
+            value={city}
+            setter={setCity}
+            placeholder={'Enter a city'}
+          />
+          <InputMultiSelect
+            label="State(s): "
+            value={states}
+            setter={setStates}
+            options={stateAbbreviations}
+          />
+        </div>
+      )}
+      {searchMethod === 'Map' && (
+        <>
+          <SearchMapWithNoSSR geo={geo} setGeo={setGeo}>
+            {/* <DisplayResultsWithNoSSR setGeo={setGeo} /> */}
+          </SearchMapWithNoSSR>
+          {/* <SearchMap setGeo={setGeo}></SearchMap> */}
+        </>
+      )}
     </div>
   );
 }

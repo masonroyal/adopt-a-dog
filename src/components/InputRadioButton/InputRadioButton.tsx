@@ -7,6 +7,7 @@ interface InputRadioButtonProps {
   legend: string;
   name: string;
   value: string;
+  className?: string;
   id?: string;
   setter: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -17,25 +18,27 @@ function InputRadioButton({
   name,
   value,
   setter,
+  className = '',
   id,
   ...delegated
 }: InputRadioButtonProps) {
   return (
-    <>
+    <div className={styles.wrapper}>
       <legend>{legend}</legend>
-      {options.map((option, i) => {
-        return (
-          <React.Fragment key={i}>
+      <div className={styles.buttonHolder}>
+        {options.map((option, i) => {
+          return (
             <RadioButton
+              key={i}
               option={option}
               name={name}
               value={value}
               setter={setter}
             />
-          </React.Fragment>
-        );
-      })}
-    </>
+          );
+        })}
+      </div>
+    </div>
   );
 }
 
@@ -52,8 +55,9 @@ function RadioButton({ option, id, name, value, setter }: RadioButtonProps) {
   const appliedId = id || generatedId;
 
   return (
-    <>
+    <div className={styles.buttonLabelHolder}>
       <input
+        className={styles.radioButton}
         type="radio"
         name={name}
         id={appliedId}
@@ -63,8 +67,8 @@ function RadioButton({ option, id, name, value, setter }: RadioButtonProps) {
           setter(e.target.value);
         }}
       />
-      <label htmlFor={appliedId}>{option}: </label>
-    </>
+      <label htmlFor={appliedId}>{option} </label>
+    </div>
   );
 }
 

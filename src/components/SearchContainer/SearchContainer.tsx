@@ -2,6 +2,7 @@
 import * as React from 'react';
 import useSWR from 'swr';
 import { useRouter } from 'next/navigation';
+import { UserContext, logoutStaleUser } from '@/providers/UserProvider';
 
 import SearchForm from '@/components/SearchForm';
 import SearchResults from '../SearchResults/SearchResults';
@@ -15,10 +16,12 @@ import { getDogIds, getDogsInfo } from '@/utils/searchHelpers';
 import { Dog, GeoBounds } from '@/types';
 import { API_ENDPOINT } from '@/utils/constants';
 import styles from './SearchContainer.module.scss';
+import { ArrowRightCircle, ChevronsLeft, ChevronsRight } from 'react-feather';
 
 interface SearchContainerProps {}
 
 function SearchContainer({}: SearchContainerProps) {
+  const { user, isLoggedIn, setLogin } = React.useContext(UserContext);
   const [searchResults, setSearchResults] = React.useState<Dog[]>([]);
   const [nextPage, setNextPage] = React.useState('');
   const [prevPage, setPrevPage] = React.useState('');
@@ -66,8 +69,9 @@ function SearchContainer({}: SearchContainerProps) {
     if (error.status === 401) {
       // TODO: how to redirect without having the error on first log in?
       toast.error('Please log in to view this page');
-      localStorage.setItem('user', '');
-      localStorage.setItem('isLoggedIn', String(false));
+      logoutStaleUser(setLogin);
+      // localStorage.setItem('user', '');
+      // localStorage.setItem('isLoggedIn', String(false));
     }
 
     return <div>Failed to load</div>;
@@ -192,22 +196,34 @@ function SearchContainer({}: SearchContainerProps) {
           setMatchedDog={setMatchedDog}
         />
       )}
-      {searchResults.length > 1 && (
-        <SearchResults
-          searchResults={searchResults}
-          handleSettingFavorites={handleSettingFavorites}
-        />
-      )}
-      {prevPage && (
-        <Button url={prevPage} onClick={() => handlePrevAndNext(prevPage)}>
-          Previous
-        </Button>
-      )}
-      {nextPage && (
-        <Button url={nextPage} onClick={() => handlePrevAndNext(nextPage)}>
-          Next
-        </Button>
-      )}
+      <div className={styles.searchResultsContainer}>
+        {prevPage && (
+          <ChevronsLeft
+            size={36}
+            className={styles.prev}
+            onClick={() => handlePrevAndNext(prevPage)}
+          >
+            Previous
+          </ChevronsLeft>
+        )}
+        {searchResults.length > 1 && (
+          <SearchResults
+            className={styles.searchResults}
+            searchResults={searchResults}
+            handleSettingFavorites={handleSettingFavorites}
+          />
+        )}
+        {nextPage && (
+          <ChevronsRight
+            // url={nextPage}
+            size={36}
+            className={styles.next}
+            onClick={() => handlePrevAndNext(nextPage)}
+          >
+            Next
+          </ChevronsRight>
+        )}
+      </div>
     </div>
   );
 }

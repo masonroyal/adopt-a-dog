@@ -19,7 +19,7 @@ function SearchMap({ setGeo }: SearchMapProps) {
           attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
-        <MemoDisplayPosition setGeo={setGeo} />
+        <DisplayPosition setGeo={setGeo} />
       </MapContainer>
     </div>
   );
@@ -38,12 +38,12 @@ function DisplayPosition({ setGeo }: DisplayPositionProps) {
 
       setGeo({
         top_left: {
-          lat: parseFloat(bounds.getNorth().toFixed(4)),
-          lon: parseFloat(bounds.getWest().toFixed(4)),
+          lat: parseFloat(bounds.getNorth().toFixed(3)),
+          lon: parseFloat(bounds.getWest().toFixed(3)),
         },
         bottom_right: {
-          lat: parseFloat(bounds.getSouth().toFixed(4)),
-          lon: parseFloat(bounds.getEast().toFixed(4)),
+          lat: parseFloat(bounds.getSouth().toFixed(3)),
+          lon: parseFloat(bounds.getEast().toFixed(3)),
         },
       });
     },
@@ -63,7 +63,5 @@ function DisplayPosition({ setGeo }: DisplayPositionProps) {
     </div>
   );
 }
-
-const MemoDisplayPosition = React.memo(DisplayPosition);
 
 export default SearchMap;
