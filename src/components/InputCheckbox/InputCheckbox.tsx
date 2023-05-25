@@ -25,7 +25,8 @@ function InputCheckbox<T>({
 
   const appliedClassName = `${styles.wrapper} ${className}`;
   return (
-    <div className={styles.wrapper}>
+    <div className={appliedClassName}>
+      <label htmlFor={appliedId}>{label}</label>
       <input
         type="checkbox"
         name={name}
@@ -33,7 +34,6 @@ function InputCheckbox<T>({
         value={value}
         onChange={() => onToggle(data)}
       />
-      <label htmlFor={appliedId}>{label}</label>
     </div>
   );
 }

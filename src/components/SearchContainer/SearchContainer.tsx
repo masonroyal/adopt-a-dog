@@ -192,10 +192,33 @@ function SearchContainer({}: SearchContainerProps) {
     );
   }
 
+  function resetState() {
+    setSearchResults([]);
+    setNextPage('');
+    setPrevPage('');
+    setChosenBreeds([]);
+    setAgeMin('');
+    setAgeMax('');
+    setSize('');
+    setSortField('breed');
+    setSortDirection('Ascending');
+    setCity('');
+    setStates([]);
+    setMap(undefined);
+    setGeo(null);
+    setSearchMethod('City/State');
+    setNumResults(0);
+    setFavoriteDogs([]);
+    setShowFavorites(false);
+    setMatchedDog(null);
+    setShowMatchedDog(false);
+    setShowPrevNext(false);
+  }
+
   return (
     <div className={styles.wrapper}>
       {matchedDog && showMatchedDog ? (
-        <MatchedDog matchedDog={matchedDog} />
+        <MatchedDog matchedDog={matchedDog} resetState={resetState} />
       ) : (
         <>
           <SearchForm
@@ -240,19 +263,19 @@ function SearchContainer({}: SearchContainerProps) {
             />
           )}
           <div className={styles.searchResultsContainer}>
+            {searchResults.length > 0 && (
+              <SearchResults
+                className={styles.searchResults}
+                searchResults={searchResults}
+                handleSettingFavorites={handleSettingFavorites}
+              />
+            )}
             {showPrevNext && prevPage && (
               <SVGButton
                 IconComponent={ChevronsLeft}
                 className={styles.prev}
                 onClick={() => handlePrevAndNext(nextPage)}
                 text={`Prev ${size || 25}`}
-              />
-            )}
-            {searchResults.length > 0 && (
-              <SearchResults
-                className={styles.searchResults}
-                searchResults={searchResults}
-                handleSettingFavorites={handleSettingFavorites}
               />
             )}
             {showPrevNext && nextPage && numResults > 25 && (

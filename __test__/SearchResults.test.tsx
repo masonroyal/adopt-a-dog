@@ -1,6 +1,4 @@
-import { fireEvent, render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
-import SearchForm from '@/components/SearchForm/SearchForm';
+import { render, screen } from '@testing-library/react';
 import SearchResults from '@/components/SearchResults/SearchResults';
 
 test('renders without crashing', () => {
