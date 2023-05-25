@@ -40,42 +40,17 @@ function SearchContainer({}: SearchContainerProps) {
   const [geo, setGeo] = React.useState<GeoBounds | null>(null);
   const [searchMethod, setSearchMethod] = React.useState('City/State');
   const [numResults, setNumResults] = React.useState(0);
+  const [startIndex, setStartIndex] = React.useState(0);
+  const [endIndex, setEndIndex] = React.useState(0);
 
   const [favoriteDogs, setFavoriteDogs] = React.useState<Dog[]>([]);
   const [showFavorites, setShowFavorites] = React.useState(false);
   const [matchedDog, setMatchedDog] = React.useState<Dog | null>(null);
   const [showMatchedDog, setShowMatchedDog] = React.useState(false);
 
-  const [showPrevNext, setShowPrevNext] = React.useState(false);
   const formRef = React.useRef<HTMLFormElement | null>(null);
 
   const { push } = useRouter();
-
-  // create intersection observer to show/hide prev/next buttons
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          setShowPrevNext(true);
-        } else {
-          setShowPrevNext(false);
-        }
-      },
-      { threshold: 0.7 }
-    );
-
-    const currentFormRef = formRef.current;
-
-    if (currentFormRef) {
-      observer.observe(currentFormRef);
-    }
-
-    return () => {
-      if (currentFormRef) {
-        observer.unobserve(currentFormRef);
-      }
-    };
-  }, []);
 
   const fetchOptions = {
     method: 'GET',
@@ -113,7 +88,6 @@ function SearchContainer({}: SearchContainerProps) {
   }
 
   function handleSettingFavorites(dog: Dog) {
-    // TODO: where did I get the number 10? Is it correct?
     if (favoriteDogs.length > 10) {
       throw new Error('You can only have 10 favorites');
     }
@@ -166,7 +140,17 @@ function SearchContainer({}: SearchContainerProps) {
       setPrevPage(data.prev);
       setNextPage(data.next);
 
+      if (url === nextPage) {
+        setStartIndex(endIndex + 1);
+        setEndIndex(Math.min(endIndex + 25, numResults));
+      } else if (url === prevPage) {
+        setEndIndex(startIndex - 1);
+        setStartIndex(Math.max(1, startIndex - 25));
+      }
+
       getDogsInfo(data.resultIds, setSearchResults);
+
+      window.scrollTo({ top: 500, behavior: 'smooth' });
     } catch (error) {
       console.error('Error: ', error);
     }
@@ -190,12 +174,37 @@ function SearchContainer({}: SearchContainerProps) {
       setSearchResults,
       setNumResults
     );
+    setStartIndex(1); // Starts at 1 assuming human-friendly numbering (not zero-indexed)
+    const newEndIndex = Math.min(searchResults.length, Number(size) || 25);
+    setEndIndex(newEndIndex);
+  }
+
+  function resetState() {
+    setSearchResults([]);
+    setNextPage('');
+    setPrevPage('');
+    setChosenBreeds([]);
+    setAgeMin('');
+    setAgeMax('');
+    setSize('');
+    setSortField('breed');
+    setSortDirection('Ascending');
+    setCity('');
+    setStates([]);
+    setMap(undefined);
+    setGeo(null);
+    setSearchMethod('City/State');
+    setNumResults(0);
+    setFavoriteDogs([]);
+    setShowFavorites(false);
+    setMatchedDog(null);
+    setShowMatchedDog(false);
   }
 
   return (
     <div className={styles.wrapper}>
       {matchedDog && showMatchedDog ? (
-        <MatchedDog matchedDog={matchedDog} />
+        <MatchedDog matchedDog={matchedDog} resetState={resetState} />
       ) : (
         <>
           <SearchForm
@@ -229,7 +238,7 @@ function SearchContainer({}: SearchContainerProps) {
             favoriteDogsLength={favoriteDogs.length}
             setShowFavorites={setShowFavorites}
           />
-          {showFavorites && favoriteDogs.length > 1 && (
+          {showFavorites && (
             <FavoriteDogs
               setShowFavorites={setShowFavorites}
               favoriteDogs={favoriteDogs}
@@ -240,28 +249,35 @@ function SearchContainer({}: SearchContainerProps) {
             />
           )}
           <div className={styles.searchResultsContainer}>
-            {showPrevNext && prevPage && (
-              <SVGButton
-                IconComponent={ChevronsLeft}
-                className={styles.prev}
-                onClick={() => handlePrevAndNext(nextPage)}
-                text={`Prev ${size || 25}`}
-              />
-            )}
-            {searchResults.length > 1 && (
-              <SearchResults
-                className={styles.searchResults}
-                searchResults={searchResults}
-                handleSettingFavorites={handleSettingFavorites}
-              />
-            )}
-            {showPrevNext && nextPage && numResults > 25 && (
-              <SVGButton
-                IconComponent={ChevronsRight}
-                className={styles.next}
-                onClick={() => handlePrevAndNext(nextPage)}
-                text={`Next ${size || 25}`}
-              />
+            {searchResults.length > 0 && (
+              <>
+                <SearchResults
+                  className={styles.searchResults}
+                  searchResults={searchResults}
+                  handleSettingFavorites={handleSettingFavorites}
+                />
+                <div className={styles.buttonHolder}>
+                  {prevPage && (
+                    <SVGButton
+                      IconComponent={ChevronsLeft}
+                      className={styles.prev}
+                      onClick={() => handlePrevAndNext(prevPage)}
+                      text={`Prev ${size || 25}`}
+                    />
+                  )}
+                  {nextPage && endIndex < numResults && (
+                    <SVGButton
+                      IconComponent={ChevronsRight}
+                      className={styles.next}
+                      onClick={() => handlePrevAndNext(nextPage)}
+                      text={`Next ${size || 25}`}
+                    />
+                  )}
+                </div>
+                <div className={styles.currentResults}>
+                  Showing results {startIndex} - {endIndex} of {numResults}
+                </div>
+              </>
             )}
           </div>
         </>

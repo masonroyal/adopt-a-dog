@@ -7,37 +7,27 @@
 
 .searchResultsContainer {
   display: flex;
+  flex-direction: column;
 }
 
 .searchResults {
-  position: relative;
 }
 
-.prev,
-.next {
-  position: fixed;
-  top: 50%;
-  transition: transform 0.2s;
-  &:hover {
-    cursor: pointer;
-    // text-shadow: 2px 0 0 black;
-    transform: scale(1.08);
-  }
-}
 .prev {
-  left: calc(50% - 390px);
+  width: 90px;
 }
-
 .next {
-  right: calc(50% - 390px);
+  width: 90px;
 }
 
-@media screen and (max-width: $breakpoint-md) {
-  .prev {
-    left: calc(50% - 230px);
-  }
+.buttonHolder {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 0.5rem;
+}
 
-  .next {
-    right: calc(50% - 230px);
-  }
+.currentResults {
+  font-size: 0.9rem;
+  text-align: center;
+  margin-bottom: 1rem;
 }

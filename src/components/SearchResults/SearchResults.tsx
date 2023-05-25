@@ -25,7 +25,7 @@ function SearchResults({
           <DogCard key={dog.id} dog={dog} className={styles.dogCard}>
             <InputCheckbox
               className={styles.checkbox}
-              label="Select"
+              label="Add to favorites"
               name="favorite"
               value={dog.id}
               data={dog}

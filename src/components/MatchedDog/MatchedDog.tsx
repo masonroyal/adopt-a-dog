@@ -8,9 +8,10 @@ import styles from './MatchedDog.module.scss';
 
 interface MatchedDogProps {
   matchedDog: Dog;
+  resetState: () => void;
 }
 
-function MatchedDog({ matchedDog }: MatchedDogProps) {
+function MatchedDog({ matchedDog, resetState }: MatchedDogProps) {
   return (
     <div className={styles.wrapper}>
       <h2>🥳 Congratulations! 🥳</h2>
@@ -20,7 +21,7 @@ function MatchedDog({ matchedDog }: MatchedDogProps) {
         dog={matchedDog}
         className={styles.dogCard}
       />
-      <Button>Adopt now!</Button>
+      <Button onClick={resetState}>Adopt now!</Button>
     </div>
   );
 }

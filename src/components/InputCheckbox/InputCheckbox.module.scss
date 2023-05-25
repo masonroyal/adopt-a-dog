@@ -3,12 +3,15 @@
   justify-content: center;
   align-items: center;
   input {
-    height: 1rem;
-    width: 1rem;
+    height: 1.5rem;
+    width: 1.5rem;
     margin-right: 0.25rem;
     cursor: pointer;
   }
   label {
     cursor: pointer;
   }
+  // for absolute positioning
+  top: 0;
+  right: 0;
 }

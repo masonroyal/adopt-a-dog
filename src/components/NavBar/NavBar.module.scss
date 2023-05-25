@@ -3,17 +3,43 @@
   z-index: 99999;
   width: 100%;
   background-color: $main;
+  height: 4rem;
+  color: $white;
   display: flex;
+  justify-content: center;
+}
+
+.content {
+  max-width: $breakpoint-lg;
+  display: flex;
+  padding: 0.5rem 1rem;
   justify-content: space-between;
   align-items: center;
-  padding: 0.5rem 1rem;
-  height: 4rem;
-
-  color: $white;
+  width: 100%;
 }
 
 .left {
-  font-weight: 600;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  text-decoration: none;
+  line-height: 1.2rem;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  div {
+    font-weight: 600;
+  }
+  svg {
+    padding-bottom: 0.15rem;
+    height: 1.5rem;
+    width: 1.5rem;
+    margin-left: 0.5rem;
+  }
 }
 
 .right {

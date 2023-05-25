@@ -12,7 +12,7 @@ interface DogCardProps {
 }
 
 function DogCard({ dog, className = '', children }: DogCardProps) {
-  const appliedClassName = `${className} ${styles.wrapper} `;
+  const appliedClassName = `${styles.wrapper} ${className}`;
   return (
     <Card key={dog.id} className={appliedClassName}>
       <div className={styles.cardTop}>
@@ -25,11 +25,13 @@ function DogCard({ dog, className = '', children }: DogCardProps) {
         />
       </div>
       <div className={styles.cardBottom}>
-        <div>Breed: {dog.breed}</div>
-        <div>Age: {dog.age}</div>
-        <div>Zip: {dog.zip_code}</div>
-        {children}
+        <h3>{dog.name}</h3>
+        <div>
+          {dog.age} years old · {dog.breed}
+        </div>
+        <div>Zip Code: {dog.zip_code}</div>
       </div>
+      {children}
     </Card>
   );
 }
