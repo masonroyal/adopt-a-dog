@@ -94,6 +94,7 @@ export async function getDogsInfo(
 
     const data = await response.json();
     setSearchResults(data);
+    return data;
   } catch (error) {
     toast.error('Error loading dogs. Please try again');
     console.error('Error: ', error);
@@ -180,7 +181,7 @@ export async function getDogIds(
     setNextPage(data.next);
     setNumResults(data.total);
 
-    getDogsInfo(data.resultIds, setSearchResults);
+    return getDogsInfo(data.resultIds, setSearchResults);
   } catch (error) {
     toast.error('Error loading dogs. Please try again');
     console.error('Error: ', error);
