@@ -8,7 +8,6 @@ import dynamic from 'next/dynamic';
 import { stateAbbreviations } from '@/utils/constants';
 
 import styles from './SearchLocation.module.scss';
-import { LatLng } from 'leaflet';
 
 interface SearchLocationProps {
   city: string;
@@ -38,12 +37,6 @@ function SearchLocation({
   const SearchMapWithNoSSR = dynamic(() => import('../SearchMap/SearchMap'), {
     ssr: false,
   });
-  const DisplayResultsWithNoSSR = dynamic(
-    () => import('../SearchMapDisplayPosition/SearchMapDisplayPosition'),
-    {
-      ssr: false,
-    }
-  );
 
   return (
     <div className={styles.wrapper}>
@@ -72,10 +65,8 @@ function SearchLocation({
       )}
       {searchMethod === 'Map' && (
         <>
-          <SearchMapWithNoSSR geo={geo} setGeo={setGeo}>
-            {/* <DisplayResultsWithNoSSR setGeo={setGeo} /> */}
-          </SearchMapWithNoSSR>
-          {/* <SearchMap setGeo={setGeo}></SearchMap> */}
+          <SearchMapWithNoSSR setGeo={setGeo} />
+          {/* <SearchMap setGeo={setGeo}/> */}
         </>
       )}
     </div>

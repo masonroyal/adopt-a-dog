@@ -64,13 +64,15 @@ function SearchContainer({}: SearchContainerProps) {
       { threshold: 0.7 }
     );
 
-    if (formRef.current) {
-      observer.observe(formRef.current);
+    const currentFormRef = formRef.current;
+
+    if (currentFormRef) {
+      observer.observe(currentFormRef);
     }
 
     return () => {
-      if (formRef.current) {
-        observer.unobserve(formRef.current);
+      if (currentFormRef) {
+        observer.unobserve(currentFormRef);
       }
     };
   }, []);

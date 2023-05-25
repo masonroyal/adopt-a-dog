@@ -49,19 +49,7 @@ function DisplayPosition({ setGeo }: DisplayPositionProps) {
     },
   });
 
-  // const onClick = React.useCallback(() => {
-  //   map.setView(center, zoom);
-  // }, [map, center]);
-
-  return (
-    <div>
-      <p>
-        {/* latitude: {position.lat.toFixed(4)}, longitude:{' '}
-        {position.lng.toFixed(4)}
-        <Button onClick={onClick}>reset</Button> */}
-      </p>
-    </div>
-  );
+  return <></>;
 }
 
 export default SearchMap;
