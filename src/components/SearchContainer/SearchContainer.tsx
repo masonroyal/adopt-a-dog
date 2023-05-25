@@ -6,7 +6,6 @@ import { UserContext, logoutStaleUser } from '@/providers/UserProvider';
 
 import SearchForm from '@/components/SearchForm';
 import SearchResults from '../SearchResults/SearchResults';
-import Button from '../Button/Button';
 import fetcher from '@/utils/fetcher';
 import FavoriteDogs from '../FavoriteDogs/FavoriteDogs';
 import { toast } from 'react-hot-toast';
@@ -16,7 +15,8 @@ import { getDogIds, getDogsInfo } from '@/utils/searchHelpers';
 import { Dog, GeoBounds } from '@/types';
 import { API_ENDPOINT } from '@/utils/constants';
 import styles from './SearchContainer.module.scss';
-import { ArrowRightCircle, ChevronsLeft, ChevronsRight } from 'react-feather';
+import { ChevronsLeft, ChevronsRight } from 'react-feather';
+import SVGButton from '../SVGButton/SVGButton';
 
 interface SearchContainerProps {}
 
@@ -39,12 +39,41 @@ function SearchContainer({}: SearchContainerProps) {
   const [map, setMap] = React.useState();
   const [geo, setGeo] = React.useState<GeoBounds | null>(null);
   const [searchMethod, setSearchMethod] = React.useState('City/State');
+  const [numResults, setNumResults] = React.useState(0);
 
   const [favoriteDogs, setFavoriteDogs] = React.useState<Dog[]>([]);
-
+  const [showFavorites, setShowFavorites] = React.useState(false);
   const [matchedDog, setMatchedDog] = React.useState<Dog | null>(null);
+  const [showMatchedDog, setShowMatchedDog] = React.useState(false);
+
+  const [showPrevNext, setShowPrevNext] = React.useState(false);
+  const formRef = React.useRef<HTMLFormElement | null>(null);
 
   const { push } = useRouter();
+
+  // create intersection observer to show/hide prev/next buttons
+  React.useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (!entry.isIntersecting) {
+          setShowPrevNext(true);
+        } else {
+          setShowPrevNext(false);
+        }
+      },
+      { threshold: 0.7 }
+    );
+
+    if (formRef.current) {
+      observer.observe(formRef.current);
+    }
+
+    return () => {
+      if (formRef.current) {
+        observer.unobserve(formRef.current);
+      }
+    };
+  }, []);
 
   const fetchOptions = {
     method: 'GET',
@@ -74,7 +103,7 @@ function SearchContainer({}: SearchContainerProps) {
       // localStorage.setItem('isLoggedIn', String(false));
     }
 
-    return <div>Failed to load</div>;
+    return <div>Failed to load. Please log in and try again.</div>;
   }
 
   if (isLoading) {
@@ -156,74 +185,85 @@ function SearchContainer({}: SearchContainerProps) {
       sortDirection,
       setPrevPage,
       setNextPage,
-      setSearchResults
+      setSearchResults,
+      setNumResults
     );
   }
 
   return (
     <div className={styles.wrapper}>
-      {matchedDog && <MatchedDog matchedDog={matchedDog} />}
-      <SearchForm
-        breeds={breeds}
-        chosenBreeds={chosenBreeds}
-        setChosenBreeds={setChosenBreeds}
-        ageMin={ageMin}
-        setAgeMin={setAgeMin}
-        ageMax={ageMax}
-        setAgeMax={setAgeMax}
-        size={size}
-        setSize={setSize}
-        sortField={sortField}
-        setSortField={setSortField}
-        sortDirection={sortDirection}
-        setSortDirection={setSortDirection}
-        handleSearch={handleSearch}
-        // distance params
-        city={city}
-        setCity={setCity}
-        states={states}
-        setStates={setStates}
-        map={map}
-        setMap={setMap}
-        geo={geo}
-        setGeo={setGeo}
-        searchMethod={searchMethod}
-        setSearchMethod={setSearchMethod}
-      />
-      {favoriteDogs.length > 0 && (
-        <FavoriteDogs
-          favoriteDogs={favoriteDogs}
-          setMatchedDog={setMatchedDog}
-        />
-      )}
-      <div className={styles.searchResultsContainer}>
-        {prevPage && (
-          <ChevronsLeft
-            size={36}
-            className={styles.prev}
-            onClick={() => handlePrevAndNext(prevPage)}
-          >
-            Previous
-          </ChevronsLeft>
-        )}
-        {searchResults.length > 1 && (
-          <SearchResults
-            className={styles.searchResults}
-            searchResults={searchResults}
-            handleSettingFavorites={handleSettingFavorites}
+      {matchedDog && showMatchedDog ? (
+        <MatchedDog matchedDog={matchedDog} />
+      ) : (
+        <>
+          <SearchForm
+            ref={formRef}
+            breeds={breeds}
+            chosenBreeds={chosenBreeds}
+            setChosenBreeds={setChosenBreeds}
+            ageMin={ageMin}
+            setAgeMin={setAgeMin}
+            ageMax={ageMax}
+            setAgeMax={setAgeMax}
+            size={size}
+            setSize={setSize}
+            sortField={sortField}
+            setSortField={setSortField}
+            sortDirection={sortDirection}
+            setSortDirection={setSortDirection}
+            handleSearch={handleSearch}
+            // distance params
+            city={city}
+            setCity={setCity}
+            states={states}
+            setStates={setStates}
+            map={map}
+            setMap={setMap}
+            geo={geo}
+            setGeo={setGeo}
+            searchMethod={searchMethod}
+            setSearchMethod={setSearchMethod}
+            numResults={numResults}
+            favoriteDogsLength={favoriteDogs.length}
+            setShowFavorites={setShowFavorites}
           />
-        )}
-        {nextPage && (
-          <ChevronsRight
-            // url={nextPage}
-            size={36}
-            className={styles.next}
-            onClick={() => handlePrevAndNext(nextPage)}
-          >
-            Next
-          </ChevronsRight>
-        )}
-      </div>
+          {showFavorites && favoriteDogs.length > 1 && (
+            <FavoriteDogs
+              setShowFavorites={setShowFavorites}
+              favoriteDogs={favoriteDogs}
+              handleSettingFavorites={handleSettingFavorites}
+              setMatchedDog={setMatchedDog}
+              setShowMatchedDog={setShowMatchedDog}
+              setFavoriteDogs={setFavoriteDogs}
+            />
+          )}
+          <div className={styles.searchResultsContainer}>
+            {showPrevNext && prevPage && (
+              <SVGButton
+                IconComponent={ChevronsLeft}
+                className={styles.prev}
+                onClick={() => handlePrevAndNext(nextPage)}
+                text={`Prev ${size || 25}`}
+              />
+            )}
+            {searchResults.length > 1 && (
+              <SearchResults
+                className={styles.searchResults}
+                searchResults={searchResults}
+                handleSettingFavorites={handleSettingFavorites}
+              />
+            )}
+            {showPrevNext && nextPage && numResults > 25 && (
+              <SVGButton
+                IconComponent={ChevronsRight}
+                className={styles.next}
+                onClick={() => handlePrevAndNext(nextPage)}
+                text={`Next ${size || 25}`}
+              />
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 }

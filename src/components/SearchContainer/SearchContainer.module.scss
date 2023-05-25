@@ -20,14 +20,24 @@
   transition: transform 0.2s;
   &:hover {
     cursor: pointer;
-    text-shadow: 2px 0 0 black;
+    // text-shadow: 2px 0 0 black;
     transform: scale(1.08);
   }
 }
 .prev {
-  left: calc(50% - 380px);
+  left: calc(50% - 390px);
 }
 
 .next {
-  right: calc(50% - 380px);
+  right: calc(50% - 390px);
+}
+
+@media screen and (max-width: $breakpoint-md) {
+  .prev {
+    left: calc(50% - 230px);
+  }
+
+  .next {
+    right: calc(50% - 230px);
+  }
 }

@@ -1,9 +1,10 @@
 import { Dog } from '@/types';
 import * as React from 'react';
-import Card from '../Card/Card';
-import Image from 'next/image';
+
 import DogCard from '../DogCard/DogCard';
 import Button from '../Button/Button';
+
+import styles from './MatchedDog.module.scss';
 
 interface MatchedDogProps {
   matchedDog: Dog;
@@ -11,12 +12,16 @@ interface MatchedDogProps {
 
 function MatchedDog({ matchedDog }: MatchedDogProps) {
   return (
-    <>
-      <div>You wer matched!</div>
-      <DogCard key={matchedDog.id} dog={matchedDog}>
-        <Button>Adopt now!</Button>
-      </DogCard>
-    </>
+    <div className={styles.wrapper}>
+      <h2>🥳 Congratulations! 🥳</h2>
+      <h3>You were matched with a beautiful dog!</h3>
+      <DogCard
+        key={matchedDog.id}
+        dog={matchedDog}
+        className={styles.dogCard}
+      />
+      <Button>Adopt now!</Button>
+    </div>
   );
 }
 

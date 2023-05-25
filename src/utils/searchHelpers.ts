@@ -5,7 +5,10 @@ import React from 'react';
 
 export async function submitFavoriteDogs(
   favoriteDogs: Dog[],
-  setMatchedDog: (dog: Dog) => void
+  setMatchedDog: (dog: Dog) => void,
+  setShowMatchedDog: (show: boolean) => void,
+  setFavoriteDogs: (dogs: Dog[]) => void,
+  setShowFavorites: (show: boolean) => void
 ) {
   try {
     const response = await fetch(`${API_ENDPOINT}/dogs/match`, {
@@ -27,6 +30,9 @@ export async function submitFavoriteDogs(
     console.log(data.match);
 
     setMatchedDog(data.match);
+    setShowFavorites(false);
+    setFavoriteDogs([]);
+    setShowMatchedDog(true);
 
     return data;
   } catch (error) {
@@ -107,7 +113,8 @@ export async function getDogIds(
   sortDirection: string,
   setPrevPage: (prev: string) => void,
   setNextPage: (next: string) => void,
-  setSearchResults: (dogs: Dog[]) => void
+  setSearchResults: (dogs: Dog[]) => void,
+  setNumResults: (num: number) => void
 ) {
   try {
     // get locations
@@ -171,6 +178,7 @@ export async function getDogIds(
 
     setPrevPage(data.prev);
     setNextPage(data.next);
+    setNumResults(data.total);
 
     getDogsInfo(data.resultIds, setSearchResults);
   } catch (error) {

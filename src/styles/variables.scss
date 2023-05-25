@@ -11,6 +11,8 @@ $elevation-3: 0px 1px 2px hsl(0deg 0% 0% / 0.15),
   0px 32px 64px hsl(0deg 0% 0% / 0.1);
 
 $light-gray: #eee;
+$white: #fff;
+$border: 1px solid rgb(204, 204, 204);
 
 // $light: #e5e2c1;
 // $light-accent: #b5acd4;
@@ -24,19 +26,32 @@ $light-gray: #eee;
 // $warning: #dc802c;
 // $danger: #f44336;
 
-$light: #d8c6b3;
-$light-accent: #efc456;
-$main: #a7312e;
-$dark-accent: #a7312e;
-$dark: #252028;
+// $light: #d8c6b3;
+// $light-accent: #efc456;
+// $main: #a7312e;
+// $dark-accent: #a7312e;
+// $dark: #252028;
 
-$info-light: #007bff;
-$info: #27252e;
-$success: #5aa05a;
-$warning: #d79022;
+// $info-light: #007bff;
+// $info: #27252e;
+// $success: #5aa05a;
+// $warning: #d79022;
+// $danger: #f44336;
+
+$light: #c7ddeb;
+$light-accent: #7f97a3;
+$main: #457db2;
+$dark-accent: #67779c;
+$dark: #1f314a;
+
+$default: #999999;
+$primary: #457db2;
+$info: #1f274a;
+$success: #4aa06d;
+$warning: #c79035;
 $danger: #f44336;
 
 $breakpoint-sm: 506px;
-$breakpoint-md: 720px;
+$breakpoint-md: 828px;
 $breakpoint-lg: 992px;
 $breakpoint-xl: 1200px;
