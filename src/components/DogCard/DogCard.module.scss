@@ -1,9 +1,8 @@
 .wrapper {
-}
-
-.dogContainer {
   position: relative;
   justify-content: center;
+  width: 300px;
+  text-align: center;
 }
 
 .cardTop {
@@ -14,7 +13,7 @@
   height: 100%;
   object-fit: cover;
   border-radius: 0.5rem 0.5rem 0 0;
-  height: 200px;
+  height: 275px;
   object-fit: cover;
 }
 

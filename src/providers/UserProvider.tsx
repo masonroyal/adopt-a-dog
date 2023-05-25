@@ -70,6 +70,13 @@ export async function logoutUser(
   }
 }
 
+export async function logoutStaleUser(
+  setLogin: (user: string, loggedIn: boolean) => void
+) {
+  setLogin('', false);
+  return 'logged out';
+}
+
 function UserProvider({ children }: React.PropsWithChildren<{}>) {
   const [user, setUser] = React.useState<string>(() => {
     if (typeof window !== 'undefined') {

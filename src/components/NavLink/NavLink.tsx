@@ -6,11 +6,17 @@ import styles from './NavLink.module.scss';
 interface NavLinkProps<T> {
   href?: string;
   children: React.ReactNode;
+  className?: string;
   onClick?: () => void;
   delegated?: T;
 }
 
-function NavLink<T>({ href, children, ...delegated }: NavLinkProps<T>) {
+function NavLink<T>({
+  href,
+  children,
+  className,
+  ...delegated
+}: NavLinkProps<T>) {
   if (href) {
     return (
       <Link className={styles.navLink} href={href} {...delegated}>

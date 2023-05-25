@@ -47,22 +47,28 @@ function SearchLocation({
         value={searchMethod}
         setter={setSearchMethod}
       />
-      <br></br>
-      <Input
-        label="City: "
-        value={city}
-        setter={setCity}
-        placeholder={'Enter a city'}
-      />
-      <br></br>
-      <InputMultiSelect
-        label="State(s): "
-        value={states}
-        setter={setStates}
-        options={stateAbbreviations}
-      />
-      {/* {typeof window !== 'undefined' && <SearchMap setGeo={setGeo} />} */}
-      <SearchMapWithNoSSR setGeo={setGeo} />
+      {searchMethod === 'City/State' && (
+        <div className={styles.cityStateSearch}>
+          <Input
+            label="City: "
+            value={city}
+            setter={setCity}
+            placeholder={'Enter a city'}
+          />
+          <InputMultiSelect
+            label="State(s): "
+            value={states}
+            setter={setStates}
+            options={stateAbbreviations}
+          />
+        </div>
+      )}
+      {searchMethod === 'Map' && (
+        <>
+          <SearchMapWithNoSSR setGeo={setGeo} />
+          {/* <SearchMap setGeo={setGeo}/> */}
+        </>
+      )}
     </div>
   );
 }

@@ -26,7 +26,9 @@ function NavBar() {
 
   return (
     <nav className={styles.wrapper}>
-      <div className={styles.left}>Adopt a Dog</div>
+      <NavLink href="/" className={styles.left}>
+        Adopt a Dog
+      </NavLink>
 
       <div className={styles.right}>
         {user === '' ? (

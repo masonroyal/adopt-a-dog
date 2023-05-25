@@ -1,4 +1,7 @@
 .wrapper {
+  position: fixed;
+  z-index: 99999;
+  width: 100%;
   background-color: $main;
   display: flex;
   justify-content: space-between;
@@ -6,7 +9,7 @@
   padding: 0.5rem 1rem;
   height: 4rem;
 
-  color: $light;
+  color: $white;
 }
 
 .left {

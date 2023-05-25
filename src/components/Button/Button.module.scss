@@ -9,17 +9,17 @@
 }
 
 .primary {
-  background-color: $main;
-  color: $light;
+  background-color: $primary;
+  color: $white;
   &:hover {
-    background-color: lighten($main, 10%);
+    background-color: darken($primary, 10%);
   }
 }
 
 .secondary {
-  background-color: $light-accent;
-  color: $main;
+  background-color: $default;
+  color: $white;
   &:hover {
-    background-color: darken($light-accent, 10%);
+    background-color: darken($default, 10%);
   }
 }

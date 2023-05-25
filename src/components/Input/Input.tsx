@@ -27,11 +27,12 @@ function Input({
   title,
 }: InputProps) {
   const generatedId = React.useId();
-
   const appliedId = id || generatedId;
 
+  const appliedClassName = `${styles.wrapper} ${className}`;
+
   return (
-    <>
+    <div className={appliedClassName}>
       <label htmlFor={appliedId}>{label}</label>
       <input
         required={required}
@@ -40,13 +41,13 @@ function Input({
         title={title}
         pattern={pattern}
         id={appliedId}
-        className={`${styles.input} ${className}`}
+        className={styles.input}
         placeholder={placeholder}
         onChange={(e) => {
           setter(e.target.value);
         }}
       />
-    </>
+    </div>
   );
 }
 
