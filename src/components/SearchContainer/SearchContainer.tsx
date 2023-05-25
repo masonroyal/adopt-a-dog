@@ -46,36 +46,9 @@ function SearchContainer({}: SearchContainerProps) {
   const [matchedDog, setMatchedDog] = React.useState<Dog | null>(null);
   const [showMatchedDog, setShowMatchedDog] = React.useState(false);
 
-  const [showPrevNext, setShowPrevNext] = React.useState(false);
   const formRef = React.useRef<HTMLFormElement | null>(null);
 
   const { push } = useRouter();
-
-  // create intersection observer to show/hide prev/next buttons
-  React.useEffect(() => {
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        if (!entry.isIntersecting) {
-          setShowPrevNext(true);
-        } else {
-          setShowPrevNext(false);
-        }
-      },
-      { threshold: 0.7 }
-    );
-
-    const currentFormRef = formRef.current;
-
-    if (currentFormRef) {
-      observer.observe(currentFormRef);
-    }
-
-    return () => {
-      if (currentFormRef) {
-        observer.unobserve(currentFormRef);
-      }
-    };
-  }, []);
 
   const fetchOptions = {
     method: 'GET',
@@ -167,6 +140,8 @@ function SearchContainer({}: SearchContainerProps) {
       setNextPage(data.next);
 
       getDogsInfo(data.resultIds, setSearchResults);
+
+      window.scrollTo({ top: 500, behavior: 'smooth' });
     } catch (error) {
       console.error('Error: ', error);
     }
@@ -212,7 +187,6 @@ function SearchContainer({}: SearchContainerProps) {
     setShowFavorites(false);
     setMatchedDog(null);
     setShowMatchedDog(false);
-    setShowPrevNext(false);
   }
 
   return (
@@ -264,27 +238,31 @@ function SearchContainer({}: SearchContainerProps) {
           )}
           <div className={styles.searchResultsContainer}>
             {searchResults.length > 0 && (
-              <SearchResults
-                className={styles.searchResults}
-                searchResults={searchResults}
-                handleSettingFavorites={handleSettingFavorites}
-              />
-            )}
-            {showPrevNext && prevPage && (
-              <SVGButton
-                IconComponent={ChevronsLeft}
-                className={styles.prev}
-                onClick={() => handlePrevAndNext(nextPage)}
-                text={`Prev ${size || 25}`}
-              />
-            )}
-            {showPrevNext && nextPage && numResults > 25 && (
-              <SVGButton
-                IconComponent={ChevronsRight}
-                className={styles.next}
-                onClick={() => handlePrevAndNext(nextPage)}
-                text={`Next ${size || 25}`}
-              />
+              <>
+                <SearchResults
+                  className={styles.searchResults}
+                  searchResults={searchResults}
+                  handleSettingFavorites={handleSettingFavorites}
+                />
+                <div className={styles.buttonHolder}>
+                  {prevPage && (
+                    <SVGButton
+                      IconComponent={ChevronsLeft}
+                      className={styles.prev}
+                      onClick={() => handlePrevAndNext(nextPage)}
+                      text={`Prev ${size || 25}`}
+                    />
+                  )}
+                  {nextPage && numResults > 25 && (
+                    <SVGButton
+                      IconComponent={ChevronsRight}
+                      className={styles.next}
+                      onClick={() => handlePrevAndNext(nextPage)}
+                      text={`Next ${size || 25}`}
+                    />
+                  )}
+                </div>
+              </>
             )}
           </div>
         </>

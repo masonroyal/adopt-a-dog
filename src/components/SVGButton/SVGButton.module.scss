@@ -2,7 +2,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  position: fixed;
   background: none;
   color: inherit;
   border: none;
@@ -13,7 +12,6 @@
   transition: transform 0.2s;
   &:hover {
     transform: scale(1.08);
-    // font-weight: 500;
   }
 }
 
