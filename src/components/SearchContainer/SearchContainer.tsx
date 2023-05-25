@@ -158,7 +158,7 @@ function SearchContainer({}: SearchContainerProps) {
 
   async function handleSearch(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    await getDogIds(
+    const results = await getDogIds(
       searchMethod,
       city,
       states,
@@ -175,7 +175,9 @@ function SearchContainer({}: SearchContainerProps) {
       setNumResults
     );
     setStartIndex(1); // Starts at 1 assuming human-friendly numbering (not zero-indexed)
-    const newEndIndex = Math.min(searchResults.length, Number(size) || 25);
+    const newEndIndex = Math.min(results.length, Number(size) || 25);
+    console.log('for end: ', { results });
+
     setEndIndex(newEndIndex);
   }
 
