@@ -8,10 +8,7 @@ interface CardProps {
 
 function Card({ children, className = '' }: CardProps) {
   const cardClassName = `${styles.wrapper} ${className}`;
-  return (
-    <div className={cardClassName}>
-      {children}
-    </div>);
+  return <article className={cardClassName}>{children}</article>;
 }
 
 export default Card;

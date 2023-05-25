@@ -229,7 +229,7 @@ function SearchContainer({}: SearchContainerProps) {
             favoriteDogsLength={favoriteDogs.length}
             setShowFavorites={setShowFavorites}
           />
-          {showFavorites && favoriteDogs.length > 1 && (
+          {showFavorites && (
             <FavoriteDogs
               setShowFavorites={setShowFavorites}
               favoriteDogs={favoriteDogs}
@@ -248,7 +248,7 @@ function SearchContainer({}: SearchContainerProps) {
                 text={`Prev ${size || 25}`}
               />
             )}
-            {searchResults.length > 1 && (
+            {searchResults.length > 0 && (
               <SearchResults
                 className={styles.searchResults}
                 searchResults={searchResults}

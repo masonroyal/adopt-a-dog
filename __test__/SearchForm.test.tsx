@@ -7,22 +7,34 @@ test('renders without crashing', () => {
 
   render(
     <SearchForm
-      breeds={[]}
+      ref={null}
+      breeds={['Pug', 'Beagle']}
       chosenBreeds={[]}
       setChosenBreeds={jest.fn()}
-      search=""
-      setSearch={jest.fn()}
-      zipCode=""
-      setZipCode={jest.fn()}
-      ageMin=""
+      ageMin={''}
       setAgeMin={jest.fn()}
-      ageMax=""
+      ageMax={''}
       setAgeMax={jest.fn()}
-      size=""
+      size={''}
       setSize={jest.fn()}
-      sortField=""
-      setsortField={jest.fn()}
+      sortField={''}
+      setSortField={jest.fn()}
+      sortDirection={''}
+      setSortDirection={jest.fn()}
       handleSearch={mockHandleSearch}
+      city={''}
+      setCity={jest.fn()}
+      states={[]}
+      setStates={jest.fn()}
+      map={null}
+      setMap={jest.fn()}
+      geo={null}
+      setGeo={jest.fn()}
+      searchMethod={''}
+      setSearchMethod={jest.fn()}
+      numResults={25}
+      favoriteDogsLength={0}
+      setShowFavorites={jest.fn()}
     />
   );
 
@@ -32,58 +44,80 @@ test('renders without crashing', () => {
 
 test('calls setter functions when input value changes', async () => {
   const user = userEvent.setup();
-  const mockSetZipCode = jest.fn();
-  const mockHandleSearch = jest.fn();
+  const mockSetAgeMin = jest.fn();
 
-  const { getByPlaceholderText } = render(
+  render(
     <SearchForm
-      breeds={[]}
+      ref={null}
+      breeds={['Pug', 'Beagle']}
       chosenBreeds={[]}
       setChosenBreeds={jest.fn()}
-      search=""
-      setSearch={jest.fn()}
-      zipCode=""
-      setZipCode={mockSetZipCode}
-      ageMin=""
-      setAgeMin={jest.fn()}
-      ageMax=""
+      ageMin={''}
+      setAgeMin={mockSetAgeMin}
+      ageMax={''}
       setAgeMax={jest.fn()}
-      size=""
+      size={''}
       setSize={jest.fn()}
-      sortField=""
-      setsortField={jest.fn()}
-      handleSearch={mockHandleSearch}
+      sortField={''}
+      setSortField={jest.fn()}
+      sortDirection={''}
+      setSortDirection={jest.fn()}
+      handleSearch={jest.fn()}
+      city={''}
+      setCity={jest.fn()}
+      states={[]}
+      setStates={jest.fn()}
+      map={null}
+      setMap={jest.fn()}
+      geo={null}
+      setGeo={jest.fn()}
+      searchMethod={''}
+      setSearchMethod={jest.fn()}
+      numResults={25}
+      favoriteDogsLength={0}
+      setShowFavorites={jest.fn()}
     />
   );
 
-  const zipCodeInput = screen.getByRole('textbox', { name: /zip code/i });
-  await user.click(zipCodeInput);
-  await user.keyboard('12345');
-  expect(mockSetZipCode).toBeCalledTimes(5);
+  const ageMinInput = screen.getByRole('combobox', { name: /min age/i });
+  await user.selectOptions(ageMinInput, ['5']);
+  expect(mockSetAgeMin).toBeCalledTimes(1);
 });
 
 test('calls handleSearch when the form is submitted', async () => {
   const user = userEvent.setup();
   const mockHandleSearch = jest.fn();
 
-  const { getByText } = render(
+  render(
     <SearchForm
-      breeds={[]}
+      ref={null}
+      breeds={['Pug', 'Beagle']}
       chosenBreeds={[]}
       setChosenBreeds={jest.fn()}
-      search=""
-      setSearch={jest.fn()}
-      zipCode=""
-      setZipCode={jest.fn()}
-      ageMin=""
+      ageMin={''}
       setAgeMin={jest.fn()}
-      ageMax=""
+      ageMax={''}
       setAgeMax={jest.fn()}
-      size=""
+      size={''}
       setSize={jest.fn()}
-      sortField=""
-      setsortField={jest.fn()}
+      sortField={''}
+      setSortField={jest.fn()}
+      sortDirection={''}
+      setSortDirection={jest.fn()}
       handleSearch={mockHandleSearch}
+      city={''}
+      setCity={jest.fn()}
+      states={[]}
+      setStates={jest.fn()}
+      map={null}
+      setMap={jest.fn()}
+      geo={null}
+      setGeo={jest.fn()}
+      searchMethod={''}
+      setSearchMethod={jest.fn()}
+      numResults={25}
+      favoriteDogsLength={0}
+      setShowFavorites={jest.fn()}
     />
   );
 

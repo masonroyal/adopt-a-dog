@@ -25,9 +25,12 @@ function DogCard({ dog, className = '', children }: DogCardProps) {
         />
       </div>
       <div className={styles.cardBottom}>
-        <div>Breed: {dog.breed}</div>
-        <div>Age: {dog.age}</div>
-        <div>Zip: {dog.zip_code}</div>
+        <h3>{dog.name}</h3>
+        <div>
+          {dog.age} years old · {dog.breed}
+        </div>
+        {/* <div>Age: {dog.age}</div> */}
+        <div>Zip Code: {dog.zip_code}</div>
         {children}
       </div>
     </Card>

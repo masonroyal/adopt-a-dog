@@ -21,10 +21,32 @@ export default function RootLayout({
     <html lang="en">
       <body className={inter.className}>
         <UserProvider>
+          <Toaster
+            containerClassName="toast-container"
+            toastOptions={{
+              success: {
+                iconTheme: {
+                  primary: '#4aa06d',
+                  secondary: '#fff',
+                },
+              },
+              error: {
+                iconTheme: {
+                  primary: '#f44336',
+                  secondary: '#fff',
+                },
+              },
+              loading: {
+                iconTheme: {
+                  primary: '#457db2',
+                  secondary: '#fff',
+                },
+              },
+            }}
+          />
           <NavBar />
           {children}
           <Footer />
-          <Toaster />
         </UserProvider>
       </body>
     </html>
