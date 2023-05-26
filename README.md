@@ -28,7 +28,7 @@ or if you use yarn:
 ### Step 3: (Optional) Enable a working map for geo bound searching 
 NOTE: React leafet and Next.js's SSR do not play well together due to leaflet regularly needing to call the `window` object. As such, in the build version, the map is unable to be changed without reloading.
 
-In the SearchLocation component comment out SearchMapWithNoSSR component and uncomment out SearchMap like this: 
+To enable a working map in the local dev environment, go to the SearchLocation component, comment out the SearchMapWithNoSSR component, and uncomment out SearchMap like this: 
 ![image](https://github.com/masonroyal/adopt-a-dog/assets/90655588/5903bd08-58d1-48c1-a8f6-7a30f1675c86)
 
 This will allow for map functionality in dev mode, but Next will not be able to build a production version.
