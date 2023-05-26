@@ -73,7 +73,7 @@ function SearchContainer({}: SearchContainerProps) {
     if (!isLoggedIn) {
       push('/login');
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, push]);
 
   if (error) {
     console.error('Error: ', error);

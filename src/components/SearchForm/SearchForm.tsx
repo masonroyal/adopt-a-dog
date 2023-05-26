@@ -92,10 +92,7 @@ const SearchForm = React.forwardRef(
               setCity={setCity}
               states={states}
               setStates={setStates}
-              geo={geo}
               setGeo={setGeo}
-              map={map}
-              setMap={setMap}
               searchMethod={searchMethod}
               setSearchMethod={setSearchMethod}
             />

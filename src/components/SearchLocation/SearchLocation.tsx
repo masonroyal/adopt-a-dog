@@ -1,6 +1,5 @@
 import * as React from 'react';
 import Input from '../Input/Input';
-import InputMultiSelect from '../InputMultiSelect/InputMultiSelect';
 import SearchMap from '../SearchMap/SearchMap';
 import InputRadioButton from '../InputRadioButton/InputRadioButton';
 import dynamic from 'next/dynamic';
@@ -15,10 +14,7 @@ interface SearchLocationProps {
   setCity: React.Dispatch<React.SetStateAction<string>>;
   states: string;
   setStates: React.Dispatch<React.SetStateAction<string>>;
-  geo: any;
   setGeo: React.Dispatch<React.SetStateAction<any>>;
-  map: any;
-  setMap: React.Dispatch<React.SetStateAction<any>>;
   searchMethod: string;
   setSearchMethod: React.Dispatch<React.SetStateAction<string>>;
 }
@@ -28,10 +24,8 @@ function SearchLocation({
   setCity,
   states,
   setStates,
-  geo,
   setGeo,
-  map,
-  setMap,
+
   searchMethod,
   setSearchMethod,
 }: SearchLocationProps) {
@@ -67,7 +61,7 @@ function SearchLocation({
       {searchMethod === 'Map' && (
         <>
           <SearchMapWithNoSSR setGeo={setGeo} />
-          {/* <SearchMap setGeo={setGeo}/> */}
+          {/* <SearchMap setGeo={setGeo} /> */}
         </>
       )}
     </div>

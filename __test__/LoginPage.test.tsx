@@ -1,9 +1,7 @@
 import { render, fireEvent, waitFor, screen } from '@testing-library/react';
 import LoginPage from '@/app/login/page';
-import UserProvider, { UserContext, loginUser } from '@/providers/UserProvider';
 import { useRouter } from 'next/navigation';
 import userEvent from '@testing-library/user-event';
-import { act } from 'react-dom/test-utils';
 
 const mockPush = jest.fn();
 // Mock the useRouter hook

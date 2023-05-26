@@ -2,7 +2,6 @@ import UserProvider from '@/providers/UserProvider';
 import './globals.scss';
 import { Inter } from 'next/font/google';
 import NavBar from '@/components/NavBar/NavBar';
-import Footer from '@/components/Footer/Footer';
 import { Toaster } from 'react-hot-toast';
 
 const inter = Inter({ subsets: ['latin'] });
@@ -46,7 +45,6 @@ export default function RootLayout({
           />
           <NavBar />
           {children}
-          <Footer />
         </UserProvider>
       </body>
     </html>
