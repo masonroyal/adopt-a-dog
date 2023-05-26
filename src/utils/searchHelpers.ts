@@ -26,9 +26,6 @@ export async function submitFavoriteDogs(
 
     const data = await response.json();
 
-    console.log('matched dog: ', data);
-    console.log(data.match);
-
     setMatchedDog(data.match);
     setShowFavorites(false);
     setFavoriteDogs([]);
@@ -78,7 +75,6 @@ export async function getDogsInfo(
   setSearchResults: (dogs: Dog[]) => void
 ) {
   try {
-    // TODO: check and limit to 100 dogs
     const response = await fetch(`${API_ENDPOINT}/dogs`, {
       method: 'POST',
       credentials: 'include',
@@ -141,7 +137,6 @@ export async function getDogIds(
 
     if (city || states || (geo && searchMethod === 'Map')) {
       const locationData = await locationResponse.json();
-      console.log({ locationData });
 
       zipCodes = locationData.results.map(
         (location: { zip_code: string }) => location.zip_code
@@ -174,7 +169,6 @@ export async function getDogIds(
     }
 
     const data = await response.json();
-    console.log({ data });
 
     setPrevPage(data.prev);
     setNextPage(data.next);

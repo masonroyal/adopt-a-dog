@@ -41,7 +41,7 @@ test('clears form after submission', async () => {
 
   const nameInput = screen.getByRole('textbox', { name: /name/i });
   const emailInput = screen.getByRole('textbox', { name: /email/i });
-  const button = screen.getByRole('button', { name: /login/i });
+  const button = screen.getByRole('button', { name: /log in/i });
 
   await user.click(nameInput);
   await user.keyboard('test');
@@ -61,7 +61,7 @@ test('name input only accepts letters', async () => {
   render(<LoginPage />);
   const nameInput = screen.getByRole('textbox', { name: /name/i });
   const emailInput = screen.getByRole('textbox', { name: /email/i });
-  const button = screen.getByRole('button', { name: /login/i });
+  const button = screen.getByRole('button', { name: /log in/i });
 
   const form = screen.getByTestId('login-form');
 
@@ -84,7 +84,7 @@ test('email input only accepts valid email addresses', async () => {
   render(<LoginPage />);
   const nameInput = screen.getByRole('textbox', { name: /name/i });
   const emailInput = screen.getByRole('textbox', { name: /email/i });
-  const button = screen.getByRole('button', { name: /login/i });
+  const button = screen.getByRole('button', { name: /log in/i });
 
   const form = screen.getByTestId('login-form');
 
@@ -107,7 +107,7 @@ test("doesn't allow submission of incomplete forms", async () => {
   render(<LoginPage />);
   const nameInput = screen.getByRole('textbox', { name: /name/i });
   const emailInput = screen.getByRole('textbox', { name: /email/i });
-  const button = screen.getByRole('button', { name: /login/i });
+  const button = screen.getByRole('button', { name: /log in/i });
 
   const form = screen.getByTestId('login-form');
 
@@ -128,7 +128,7 @@ test('redirects to / on successful login', async () => {
 
   const nameInput = screen.getByRole('textbox', { name: /name/i });
   const emailInput = screen.getByRole('textbox', { name: /email/i });
-  const button = screen.getByRole('button', { name: /login/i });
+  const button = screen.getByRole('button', { name: /log in/i });
 
   await user.click(nameInput);
   await user.keyboard('test');

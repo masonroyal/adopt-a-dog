@@ -4,10 +4,14 @@ import SearchContainer from '@/components/SearchContainer/SearchContainer';
 const user = { name: 'test', email: 'test@test.com' };
 const isLoggedIn = true;
 
+const mockPush = jest.fn();
+// Mock the useRouter hook
+jest.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: mockPush,
+  }),
+}));
+
 test('renders without crashing', () => {
   render(<SearchContainer />);
 });
-
-test('renders SearchForm with correct props', () => {});
-
-test('calls the API with the correct parameters', () => {});

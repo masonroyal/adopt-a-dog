@@ -79,7 +79,7 @@ const SearchForm = React.forwardRef(
 
     return (
       <form className={styles.wrapper} onSubmit={handleSearch} ref={ref}>
-        <h2>Find your new best friend today!</h2>
+        <h2 className={styles.title}>Find your new best friend today!</h2>
         <p className={styles.explanation}>
           Select up to 10 dogs. Submit your matches and one will be chosen for
           you to adopt!
@@ -121,7 +121,6 @@ const SearchForm = React.forwardRef(
                 className={styles.ageSelect}
                 label="Max Age: "
                 value={ageMax}
-                // placeholder="Max age"
                 setter={setAgeMax}
                 options={maxAgeOptions}
               />
