@@ -1,5 +1,5 @@
 import * as React from 'react';
-import Select, { ActionMeta, GroupBase, Options } from 'react-select';
+import Select, { Options } from 'react-select';
 
 import styles from './InputMultiSelect.module.scss';
 

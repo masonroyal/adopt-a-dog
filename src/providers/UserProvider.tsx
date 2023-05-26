@@ -41,7 +41,6 @@ export async function loginUser(
   }
 
   setLogin(name, true);
-  console.log({ response });
 
   return response;
 }
@@ -54,8 +53,6 @@ export async function logoutUser(
       method: 'POST',
       credentials: 'include',
     });
-
-    console.log({ response });
 
     if (!response.ok) {
       throw new Error('Logout failed');

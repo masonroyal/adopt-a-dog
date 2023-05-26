@@ -9,7 +9,7 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  z-index: 999; // Ensure the overlay appears above other content
+  z-index: 999;
 }
 
 .wrapper {
@@ -27,8 +27,6 @@
   padding: 1rem;
   background-color: $light-gray;
 
-  // justify-content: center;
-  // margin: 1rem auto 1rem auto;
   box-shadow: $elevation-2;
   border-radius: 0.5rem;
 }
@@ -60,7 +58,6 @@
     border-radius: 0.25rem;
     z-index: 1;
     right: 2rem;
-    // right: 0;
     transition: all 0.4s;
   }
   &:hover {

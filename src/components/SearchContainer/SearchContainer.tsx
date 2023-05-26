@@ -73,10 +73,10 @@ function SearchContainer({}: SearchContainerProps) {
     if (!isLoggedIn) {
       push('/login');
     }
-  }, [isLoggedIn]);
+  }, [isLoggedIn, push]);
 
   if (error) {
-    console.error({ error });
+    console.error('Error: ', error);
 
     if (error.status === 401) {
       logoutStaleUser(setLogin);
@@ -129,14 +129,9 @@ function SearchContainer({}: SearchContainerProps) {
       const regex = /%5B\d+%5D=(\d+)/g;
       const filteredUrl = url.replace(regex, (match, zipCode) => `=${zipCode}`);
 
-      console.log({ url });
-
-      console.log({ filteredUrl });
-
       // get size param from url
       const parsedUrl = new URL(`${API_ENDPOINT}${filteredUrl}`);
       const params = new URLSearchParams(parsedUrl.search);
-      console.log({ params });
 
       const currentParamSize = params.get('size') || '25';
 
@@ -155,8 +150,6 @@ function SearchContainer({}: SearchContainerProps) {
       }
 
       const data = await response.json();
-
-      console.log({ data });
 
       setPrevPage(data.prev);
       setNextPage(data.next);
@@ -202,13 +195,10 @@ function SearchContainer({}: SearchContainerProps) {
       setNumResults
     );
 
-    console.log('for now: ', { results });
-
     setCurrentSize(results.length.toString());
 
     setStartIndex(1);
     const newEndIndex = Math.min(results.length, Number(size) || 25);
-    console.log('for end: ', { results });
 
     setEndIndex(newEndIndex);
   }

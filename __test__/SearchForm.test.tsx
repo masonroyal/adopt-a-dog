@@ -24,7 +24,7 @@ test('renders without crashing', () => {
       handleSearch={mockHandleSearch}
       city={''}
       setCity={jest.fn()}
-      states={[]}
+      states={''}
       setStates={jest.fn()}
       map={null}
       setMap={jest.fn()}
@@ -65,7 +65,7 @@ test('calls setter functions when input value changes', async () => {
       handleSearch={jest.fn()}
       city={''}
       setCity={jest.fn()}
-      states={[]}
+      states={''}
       setStates={jest.fn()}
       map={null}
       setMap={jest.fn()}
@@ -107,7 +107,7 @@ test('calls handleSearch when the form is submitted', async () => {
       handleSearch={mockHandleSearch}
       city={''}
       setCity={jest.fn()}
-      states={[]}
+      states={''}
       setStates={jest.fn()}
       map={null}
       setMap={jest.fn()}
@@ -120,9 +120,6 @@ test('calls handleSearch when the form is submitted', async () => {
       setShowFavorites={jest.fn()}
     />
   );
-
-  // const submitButton = getByText('Search');
-  // await user.click(submitButton);
 
   const form = document.querySelector('form');
   fireEvent.submit(form as HTMLFormElement);
