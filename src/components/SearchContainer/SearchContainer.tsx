@@ -76,7 +76,7 @@ function SearchContainer({}: SearchContainerProps) {
     if (error.status === 401) {
       return (
         <div className={styles.error}>
-          Please <Link href="/login">log in</Link> again.
+          Please <Link href="/login">log in</Link>.
         </div>
       );
     }
