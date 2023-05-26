@@ -62,23 +62,26 @@ function SearchContainer({}: SearchContainerProps) {
   };
 
   const {
-    data: breeds,
+    data: breeds = [],
     error,
     isLoading,
-  } = useSWR(`${API_ENDPOINT}/dogs/breeds`, () =>
+  } = useSWR(isLoggedIn ? `${API_ENDPOINT}/dogs/breeds` : null, () =>
     fetcher(`${API_ENDPOINT}/dogs/breeds`, fetchOptions)
   );
 
-  if (error) {
-    console.log({ error });
+  React.useEffect(() => {
+    if (!isLoggedIn) {
+      push('/login');
+    }
+  }, [isLoggedIn]);
 
-    console.log('Error Status:', error.status);
+  if (error) {
+    console.error({ error });
+
     if (error.status === 401) {
-      // TODO: how to redirect without having the error on first log in?
       toast.error('Please log in to view this page');
       logoutStaleUser(setLogin);
-      // localStorage.setItem('user', '');
-      // localStorage.setItem('isLoggedIn', String(false));
+      push('/login');
     }
 
     return <div>Failed to load. Please log in and try again.</div>;
