@@ -151,6 +151,7 @@ const SearchForm = React.forwardRef(
         <div className={styles.searchBottom}>
           <div className={styles.buttonHolder}>
             <Button
+              type="button"
               buttonType="secondary"
               onClick={() => setShowFavorites(true)}
             >
