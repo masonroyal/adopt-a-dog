@@ -24,7 +24,9 @@ function LoginPage() {
     setEmail('');
     toast.success('Login successful');
 
-    push('/');
+    setTimeout(() => {
+      push('/'), 1000;
+    });
   }
 
   return (

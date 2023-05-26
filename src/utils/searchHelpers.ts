@@ -104,7 +104,7 @@ export async function getDogsInfo(
 export async function getDogIds(
   searchMethod: string,
   city: string,
-  states: string[],
+  states: string,
   geo: GeoBounds | null,
   chosenBreeds: string[],
   ageMin: string,
@@ -127,20 +127,19 @@ export async function getDogIds(
       credentials: 'include',
       body: JSON.stringify({
         city: city && searchMethod === 'City/State' ? city : null,
-        states:
-          states.length > 0 && searchMethod === 'City/State' ? states : null,
+        states: states && searchMethod === 'City/State' ? [states] : null,
         size: 100,
         geoBoundingBox: geo && searchMethod === 'Map' ? geo : null,
       }),
     });
 
     if (!locationResponse.ok) {
-      throw new Error('Error in location search');
+      throw new Error(`Error in location search: ${locationResponse}`);
     }
 
     let zipCodes = [];
 
-    if (city || states.length > 0 || (geo && searchMethod === 'Map')) {
+    if (city || states || (geo && searchMethod === 'Map')) {
       const locationData = await locationResponse.json();
       console.log({ locationData });
 

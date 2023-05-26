@@ -30,12 +30,13 @@ function SearchContainer({}: SearchContainerProps) {
   const [ageMin, setAgeMin] = React.useState('');
   const [ageMax, setAgeMax] = React.useState('');
   const [size, setSize] = React.useState('');
+  const [currentSize, setCurrentSize] = React.useState('');
   const [sortField, setSortField] = React.useState('breed');
   const [sortDirection, setSortDirection] = React.useState('Ascending');
 
   // distance params
   const [city, setCity] = React.useState('');
-  const [states, setStates] = React.useState<string[]>([]);
+  const [states, setStates] = React.useState('');
   const [map, setMap] = React.useState();
   const [geo, setGeo] = React.useState<GeoBounds | null>(null);
   const [searchMethod, setSearchMethod] = React.useState('City/State');
@@ -61,23 +62,26 @@ function SearchContainer({}: SearchContainerProps) {
   };
 
   const {
-    data: breeds,
+    data: breeds = [],
     error,
     isLoading,
-  } = useSWR(`${API_ENDPOINT}/dogs/breeds`, () =>
+  } = useSWR(isLoggedIn ? `${API_ENDPOINT}/dogs/breeds` : null, () =>
     fetcher(`${API_ENDPOINT}/dogs/breeds`, fetchOptions)
   );
 
-  if (error) {
-    console.log({ error });
+  React.useEffect(() => {
+    if (!isLoggedIn) {
+      push('/login');
+    }
+  }, [isLoggedIn]);
 
-    console.log('Error Status:', error.status);
+  if (error) {
+    console.error({ error });
+
     if (error.status === 401) {
-      // TODO: how to redirect without having the error on first log in?
       toast.error('Please log in to view this page');
       logoutStaleUser(setLogin);
-      // localStorage.setItem('user', '');
-      // localStorage.setItem('isLoggedIn', String(false));
+      push('/login');
     }
 
     return <div>Failed to load. Please log in and try again.</div>;
@@ -119,7 +123,20 @@ function SearchContainer({}: SearchContainerProps) {
     try {
       // remove square brackets from url
       const regex = /%5B\d+%5D=(\d+)/g;
-      const filteredUrl = url.replace(regex, (match, zipCode) => zipCode);
+      const filteredUrl = url.replace(regex, (match, zipCode) => `=${zipCode}`);
+
+      console.log({ url });
+
+      console.log({ filteredUrl });
+
+      // get size param from url
+      const parsedUrl = new URL(`${API_ENDPOINT}${filteredUrl}`);
+      const params = new URLSearchParams(parsedUrl.search);
+      console.log({ params });
+
+      const currentParamSize = params.get('size') || '25';
+
+      setCurrentSize(currentParamSize);
 
       const response = await fetch(`${API_ENDPOINT}${filteredUrl}`, {
         method: 'GET',
@@ -142,10 +159,16 @@ function SearchContainer({}: SearchContainerProps) {
 
       if (url === nextPage) {
         setStartIndex(endIndex + 1);
-        setEndIndex(Math.min(endIndex + 25, numResults));
+        const newEndIndex = Math.min(
+          endIndex + (data.length, Number(currentSize) || 25)
+        );
+        setEndIndex(Math.min(newEndIndex, numResults));
       } else if (url === prevPage) {
         setEndIndex(startIndex - 1);
-        setStartIndex(Math.max(1, startIndex - 25));
+        const newStartIndex = Math.min(
+          startIndex - (data.length, Number(currentSize) || 25)
+        );
+        setStartIndex(newStartIndex);
       }
 
       getDogsInfo(data.resultIds, setSearchResults);
@@ -174,7 +197,12 @@ function SearchContainer({}: SearchContainerProps) {
       setSearchResults,
       setNumResults
     );
-    setStartIndex(1); // Starts at 1 assuming human-friendly numbering (not zero-indexed)
+
+    console.log('for now: ', { results });
+
+    setCurrentSize(results.length.toString());
+
+    setStartIndex(1);
     const newEndIndex = Math.min(results.length, Number(size) || 25);
     console.log('for end: ', { results });
 
@@ -192,7 +220,7 @@ function SearchContainer({}: SearchContainerProps) {
     setSortField('breed');
     setSortDirection('Ascending');
     setCity('');
-    setStates([]);
+    setStates('');
     setMap(undefined);
     setGeo(null);
     setSearchMethod('City/State');
@@ -264,7 +292,7 @@ function SearchContainer({}: SearchContainerProps) {
                       IconComponent={ChevronsLeft}
                       className={styles.prev}
                       onClick={() => handlePrevAndNext(prevPage)}
-                      text={`Prev ${size || 25}`}
+                      text={`Prev ${currentSize || 25}`}
                     />
                   )}
                   {nextPage && endIndex < numResults && (
@@ -272,7 +300,7 @@ function SearchContainer({}: SearchContainerProps) {
                       IconComponent={ChevronsRight}
                       className={styles.next}
                       onClick={() => handlePrevAndNext(nextPage)}
-                      text={`Next ${size || 25}`}
+                      text={`Next ${currentSize || 25}`}
                     />
                   )}
                 </div>

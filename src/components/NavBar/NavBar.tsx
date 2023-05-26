@@ -14,6 +14,8 @@ function NavBar() {
   const router = useRouter();
   const { push } = router;
 
+  console.log({ user, isLoggedIn });
+
   const DogSVG = (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -49,7 +51,7 @@ function NavBar() {
         </Link>
 
         <div className={styles.right}>
-          {user === '' ? (
+          {isLoggedIn === false ? (
             <NavLink href="/login">Log In</NavLink>
           ) : (
             <>
