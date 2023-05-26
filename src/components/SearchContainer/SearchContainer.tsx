@@ -17,6 +17,7 @@ import { API_ENDPOINT } from '@/utils/constants';
 import styles from './SearchContainer.module.scss';
 import { ChevronsLeft, ChevronsRight } from 'react-feather';
 import SVGButton from '../SVGButton/SVGButton';
+import Link from 'next/link';
 
 interface SearchContainerProps {}
 
@@ -65,38 +66,30 @@ function SearchContainer({}: SearchContainerProps) {
     data: breeds = [],
     error,
     isLoading,
-  } = useSWR(isLoggedIn ? `${API_ENDPOINT}/dogs/breeds` : null, () =>
+  } = useSWR(`${API_ENDPOINT}/dogs/breeds`, () =>
     fetcher(`${API_ENDPOINT}/dogs/breeds`, fetchOptions)
   );
-
-  React.useEffect(() => {
-    setTimeout(() => {
-      if (!isLoggedIn) {
-        push('/login');
-      }
-    }, 100);
-  }, [isLoggedIn, push]);
 
   if (error) {
     console.error('Error: ', error);
 
     if (error.status === 401) {
-      logoutStaleUser(setLogin);
-      toast.error('Please log in to view this page');
-      setTimeout(() => {
-        push('/login'), 200;
-      });
+      return (
+        <div className={styles.error}>
+          Please <Link href="/login">log in</Link> again.
+        </div>
+      );
     }
 
     return (
       <div className={styles.error}>
-        Failed to load. Please log in and try again.
+        Failed to load. Please ensure you are logged in and try again.
       </div>
     );
   }
 
   if (isLoading) {
-    return <div>Loading...</div>;
+    return <div className={styles.error}>Loading...</div>;
   }
 
   function handleSettingFavorites(dog: Dog) {
