@@ -1,4 +1,4 @@
-# Adopt A Dog Fetch FE Take Home Challeng
+# Adopt A Dog Fetch FE Take Home Challenge
 ## Info
 A deployed version can be found at:
 
