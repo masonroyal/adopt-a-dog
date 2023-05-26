@@ -79,12 +79,16 @@ function SearchContainer({}: SearchContainerProps) {
     console.error({ error });
 
     if (error.status === 401) {
-      toast.error('Please log in to view this page');
       logoutStaleUser(setLogin);
-      push('/login');
+      toast.error('Please log in to view this page');
+      push('/login'), 1000;
     }
 
-    return <div>Failed to load. Please log in and try again.</div>;
+    return (
+      <div className={styles.error}>
+        Failed to load. Please log in and try again.
+      </div>
+    );
   }
 
   if (isLoading) {

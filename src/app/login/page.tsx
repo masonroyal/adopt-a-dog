@@ -24,8 +24,9 @@ function LoginPage() {
     setEmail('');
     setName('');
 
+    // timeout to allow time for the cookies to be set
     setTimeout(() => {
-      push('/'), 1000;
+      push('/'), 500;
     });
   }
 
@@ -39,6 +40,7 @@ function LoginPage() {
           className={styles.form}
         >
           <Input
+            className={styles.input}
             label="Name: "
             id="name"
             value={name}
@@ -49,6 +51,7 @@ function LoginPage() {
             title="Only letters are accepted"
           />
           <Input
+            className={styles.input}
             label="Email: "
             type="email"
             id="email"

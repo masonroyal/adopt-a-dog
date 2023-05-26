@@ -10,7 +10,8 @@
   align-items: center;
   background-color: $white;
 
-  width: 500px;
+  width: 80%;
+  max-width: 500px;
   border-radius: 0.5rem;
   box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 
@@ -25,5 +26,18 @@
 
   button {
     margin-top: 1rem;
+  }
+}
+
+.input {
+  display: flex;
+  flex-direction: column;
+}
+
+@media screen and (max-width: $breakpoint-sm) {
+  .wrapper {
+    width: 80%;
+    border-radius: 0;
+    min-width: 330px;
   }
 }
