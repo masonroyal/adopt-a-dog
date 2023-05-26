@@ -19,10 +19,10 @@ function LoginPage() {
 
   async function handleSubmit(event: React.FormEvent) {
     const res = await loginUser(event, name, email, setLogin);
-
-    setName('');
-    setEmail('');
     toast.success('Login successful');
+
+    setEmail('');
+    setName('');
 
     setTimeout(() => {
       push('/'), 1000;
