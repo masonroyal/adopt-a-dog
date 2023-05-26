@@ -1,3 +1,9 @@
+# Adopt A Dog Fetch FE Take Home Challeng
+## Info
+A deployed version can be found at:
+
+https://adopt-a-dog-brown.vercel.app
+
 ## Instructions to run on your local machine
 ### Step 1 Clone the repo
 Navigate to your desired directory in your terminal.
