@@ -17,6 +17,7 @@ import { API_ENDPOINT } from '@/utils/constants';
 import styles from './SearchContainer.module.scss';
 import { ChevronsLeft, ChevronsRight } from 'react-feather';
 import SVGButton from '../SVGButton/SVGButton';
+import Link from 'next/link';
 
 interface SearchContainerProps {}
 
@@ -73,7 +74,11 @@ function SearchContainer({}: SearchContainerProps) {
     console.error('Error: ', error);
 
     if (error.status === 401) {
-      return <div className={styles.error}>Please Log In</div>;
+      return (
+        <div className={styles.error}>
+          Please <Link href="/login">log in</Link> again.
+        </div>
+      );
     }
 
     return (
