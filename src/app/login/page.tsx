@@ -47,8 +47,6 @@ function LoginPage() {
             setter={setName}
             placeholder="Name"
             required={true}
-            pattern="^[a-zA-Z]+$"
-            title="Only letters are accepted"
           />
           <Input
             className={styles.input}
