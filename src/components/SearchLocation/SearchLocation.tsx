@@ -8,12 +8,13 @@ import dynamic from 'next/dynamic';
 import { stateAbbreviations } from '@/utils/constants';
 
 import styles from './SearchLocation.module.scss';
+import InputSelect from '../InputSelect/InputSelect';
 
 interface SearchLocationProps {
   city: string;
   setCity: React.Dispatch<React.SetStateAction<string>>;
-  states: string[];
-  setStates: React.Dispatch<React.SetStateAction<string[]>>;
+  states: string;
+  setStates: React.Dispatch<React.SetStateAction<string>>;
   geo: any;
   setGeo: React.Dispatch<React.SetStateAction<any>>;
   map: any;
@@ -55,8 +56,8 @@ function SearchLocation({
             setter={setCity}
             placeholder={'Enter a city'}
           />
-          <InputMultiSelect
-            label="State(s): "
+          <InputSelect
+            label="State: "
             value={states}
             setter={setStates}
             options={stateAbbreviations}

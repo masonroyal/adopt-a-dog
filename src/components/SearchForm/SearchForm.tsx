@@ -22,8 +22,8 @@ interface SearchFormProps {
   handleSearch: (e: React.FormEvent<HTMLFormElement>) => void;
   city: string;
   setCity: React.Dispatch<React.SetStateAction<string>>;
-  states: string[];
-  setStates: React.Dispatch<React.SetStateAction<string[]>>;
+  states: string;
+  setStates: React.Dispatch<React.SetStateAction<string>>;
   geo: any;
   setGeo: React.Dispatch<React.SetStateAction<any>>;
   map: any;
