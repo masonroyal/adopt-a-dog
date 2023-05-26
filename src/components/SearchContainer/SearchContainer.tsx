@@ -70,9 +70,11 @@ function SearchContainer({}: SearchContainerProps) {
   );
 
   React.useEffect(() => {
-    if (!isLoggedIn) {
-      push('/login');
-    }
+    setTimeout(() => {
+      if (!isLoggedIn) {
+        push('/login');
+      }
+    }, 100);
   }, [isLoggedIn, push]);
 
   if (error) {
@@ -81,7 +83,9 @@ function SearchContainer({}: SearchContainerProps) {
     if (error.status === 401) {
       logoutStaleUser(setLogin);
       toast.error('Please log in to view this page');
-      push('/login'), 1000;
+      setTimeout(() => {
+        push('/login'), 200;
+      });
     }
 
     return (
