@@ -111,10 +111,9 @@ function SearchContainer({}: SearchContainerProps) {
 
     if (favoriteDogs.length > 10) {
       toast.error(
-        'You can only have 10 favorites. Please remove one before adding one.'
+        'You can only have 10 favorites. Please remove one before adding another.'
       );
       return;
-      // throw new Error('You can only have 10 favorites');
     }
 
     newArray.push(dog);

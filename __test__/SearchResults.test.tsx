@@ -3,7 +3,11 @@ import SearchResults from '@/components/SearchResults/SearchResults';
 
 test('renders without crashing', () => {
   render(
-    <SearchResults searchResults={[]} handleSettingFavorites={jest.fn()} />
+    <SearchResults
+      favoriteDogs={[]}
+      searchResults={[]}
+      handleSettingFavorites={jest.fn()}
+    />
   );
 });
 
@@ -29,6 +33,7 @@ test('renders dog cards based on provided data', () => {
 
   render(
     <SearchResults
+      favoriteDogs={[]}
       searchResults={mockDogs}
       handleSettingFavorites={jest.fn()}
     />
