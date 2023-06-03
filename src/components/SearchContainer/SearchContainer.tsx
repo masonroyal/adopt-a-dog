@@ -109,7 +109,7 @@ function SearchContainer({}: SearchContainerProps) {
       }
     }
 
-    if (favoriteDogs.length > 10) {
+    if (favoriteDogs.length >= 10) {
       toast.error(
         'You can only have 10 favorites. Please remove one before adding another.'
       );

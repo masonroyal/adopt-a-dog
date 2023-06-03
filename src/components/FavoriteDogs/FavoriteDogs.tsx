@@ -34,6 +34,7 @@ function FavoriteDogs({
                 <InputCheckbox
                   className={styles.checkbox}
                   label="Unselect"
+                  checked={favoriteDogs.some((favDog) => favDog.id === dog.id)}
                   name="favorite"
                   value={dog.id}
                   data={dog}
