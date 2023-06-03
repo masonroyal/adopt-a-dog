@@ -8,6 +8,7 @@ import styles from './SearchResults.module.scss';
 
 interface SearchResultsProps {
   searchResults: Dog[];
+  favoriteDogs: Dog[];
   className?: string;
   handleSettingFavorites: (dog: Dog) => void;
 }
@@ -15,6 +16,7 @@ interface SearchResultsProps {
 function SearchResults({
   searchResults,
   handleSettingFavorites,
+  favoriteDogs,
   className = '',
 }: SearchResultsProps) {
   const appliedClassName = `${className} ${styles.wrapper} `;
@@ -26,6 +28,7 @@ function SearchResults({
             <InputCheckbox
               className={styles.checkbox}
               label="Add to favorites"
+              checked={favoriteDogs.some((favDog) => favDog.id === dog.id)}
               name="favorite"
               value={dog.id}
               data={dog}

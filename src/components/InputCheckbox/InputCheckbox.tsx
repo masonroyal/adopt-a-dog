@@ -5,6 +5,7 @@ interface InputCheckboxProps<T> {
   label: string;
   name: string;
   value: number;
+  checked: boolean;
   className?: string;
   id?: string;
   data: T;
@@ -18,6 +19,7 @@ function InputCheckbox<T>({
   className = '',
   id,
   data,
+  checked,
   onToggle,
 }: InputCheckboxProps<T>) {
   const generatedId = React.useId();
@@ -30,6 +32,7 @@ function InputCheckbox<T>({
       <input
         type="checkbox"
         name={name}
+        checked={checked}
         id={appliedId}
         value={value}
         onChange={() => onToggle(data)}

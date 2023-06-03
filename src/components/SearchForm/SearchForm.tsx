@@ -4,7 +4,7 @@ import * as React from 'react';
 import { UserContext } from '@/providers/UserProvider';
 
 import styles from './SearchForm.module.scss';
-import InputSelect from '../InputSelect/InputSelect';
+import InputSelect from '../InputSelect';
 import InputMultiSelect from '../InputMultiSelect/InputMultiSelect';
 import Button from '../Button/Button';
 import SearchLocation from '../SearchLocation/SearchLocation';

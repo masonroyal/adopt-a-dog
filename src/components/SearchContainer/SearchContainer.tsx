@@ -93,10 +93,6 @@ function SearchContainer({}: SearchContainerProps) {
   }
 
   function handleSettingFavorites(dog: Dog) {
-    if (favoriteDogs.length > 10) {
-      throw new Error('You can only have 10 favorites');
-    }
-
     const dogId = dog.id;
 
     const newArray = [...favoriteDogs];
@@ -111,6 +107,14 @@ function SearchContainer({}: SearchContainerProps) {
         toast.success('Dog removed from favorites');
         return;
       }
+    }
+
+    if (favoriteDogs.length > 10) {
+      toast.error(
+        'You can only have 10 favorites. Please remove one before adding one.'
+      );
+      return;
+      // throw new Error('You can only have 10 favorites');
     }
 
     newArray.push(dog);
@@ -275,6 +279,7 @@ function SearchContainer({}: SearchContainerProps) {
                 <SearchResults
                   className={styles.searchResults}
                   searchResults={searchResults}
+                  favoriteDogs={favoriteDogs}
                   handleSettingFavorites={handleSettingFavorites}
                 />
                 <div className={styles.buttonHolder}>
