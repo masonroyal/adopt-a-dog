@@ -2,6 +2,7 @@
 import React from 'react';
 import { API_ENDPOINT } from '@utils/constants';
 import isValidEmail from '@/utils/validEmail';
+import { toast } from 'react-hot-toast';
 
 interface UserContextProps {
   user: string;
@@ -21,28 +22,36 @@ export async function loginUser(
   email: string,
   setLogin: (user: string, loggedIn: boolean) => void
 ) {
-  event.preventDefault();
+  try {
+    event.preventDefault();
 
-  if (!isValidEmail(email)) {
-    throw new Error('Invalid email');
+    if (!isValidEmail(email)) {
+      throw new Error('Invalid email');
+    }
+
+    const response = await fetch(`${API_ENDPOINT}/auth/login`, {
+      method: 'POST',
+      credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ name, email }),
+    });
+
+    if (!response.ok) {
+      throw new Error('Login failed');
+    }
+
+    setLogin(name, true);
+
+    return response;
+  } catch (error) {
+    let message;
+    if (error instanceof Error) message = error.message;
+    else message = String(error);
+    console.error('Error logging in: ', error);
+    return;
   }
-
-  const response = await fetch(`${API_ENDPOINT}/auth/login`, {
-    method: 'POST',
-    credentials: 'include',
-    headers: {
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({ name, email }),
-  });
-
-  if (!response.ok) {
-    throw new Error('Login failed');
-  }
-
-  setLogin(name, true);
-
-  return response;
 }
 
 export async function logoutUser(
