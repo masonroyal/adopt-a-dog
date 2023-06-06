@@ -138,6 +138,8 @@ export async function getDogIds(
     if (city || states || (geo && searchMethod === 'Map')) {
       const locationData = await locationResponse.json();
 
+      console.log('locationData: ', locationData);
+
       zipCodes = locationData.results.map(
         (location: { zip_code: string }) => location.zip_code
       );

@@ -14,7 +14,7 @@ interface DogCardProps {
 function DogCard({ dog, className = '', children }: DogCardProps) {
   const appliedClassName = `${styles.wrapper} ${className}`;
   return (
-    <Card key={dog.id} className={appliedClassName}>
+    <Card className={appliedClassName}>
       <div className={styles.cardTop}>
         <Image
           src={dog.img}

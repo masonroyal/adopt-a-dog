@@ -19,7 +19,7 @@ function SearchResults({
   favoriteDogs,
   className = '',
 }: SearchResultsProps) {
-  const appliedClassName = `${className} ${styles.wrapper} `;
+  const appliedClassName = `${styles.wrapper} ${className}`;
   return (
     <div className={appliedClassName}>
       {searchResults.map((dog) => {
